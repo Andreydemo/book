@@ -3,11 +3,12 @@
 		<link rel="stylesheet" href="css/index-styles.css" />
 	</head>
 	<body>
-<<<<<<< eed3381426e62bf078596a00fc3fb8e9f43b0a5d
+		<h3>Doge</h3>
 		<img class="image" src="images/maxresdefault.jpg" />
+		<img class="image" src="images/doge_almighty_by_ry_spirit-d7lxh5y.jpg" />
+<<<<<<< HEAD
 =======
-		<img src="images/maxresdefault.jpg" />
->>>>>>> Added image on the index.html
-		<img src="images/doge_almighty_by_ry_spirit-d7lxh5y.jpg" />
+		<img class="image" src="images/doge-2.jpg" />
+>>>>>>> 6d68693... added class for images on index, added border for images
 	</body>
 </html>

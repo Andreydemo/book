@@ -1,0 +1,10 @@
+.image {
+<<<<<<< HEAD
+	height:800;
+	width:800;
+=======
+	height:400;
+	width:400;
+	border  : 10px solid #cccccc;
+>>>>>>> 6d68693... added class for images on index, added border for images
+}
