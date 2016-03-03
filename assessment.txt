@@ -1,0 +1,5 @@
+ - Improve classloading understanding.
+ - Learn UML diagram basics.
+ - Get some Practical skills with XPATH.
+ - Get acquainted with SOAP.
+ - Improve ANT skill.
