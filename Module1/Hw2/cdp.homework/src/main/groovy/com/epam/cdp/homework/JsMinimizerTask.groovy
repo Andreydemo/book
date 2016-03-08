@@ -27,22 +27,28 @@ class JsMinimizerTask extends DefaultTask {
     @TaskAction
     public void minimize() {
         if (fileMap == null) {
+            JsFile resultFile = new JsFile(outputFolder + BACK_SLASH + fileName);
             result = new StringBuffer()
             new File(inputFolder).eachFileMatch(~/.*.js/) { file ->
-                minimizeFile(file)
-                file.delete()
+                JsFile jsFile = new JsFile(file)
+                if (!jsFile.file.name.equals(fileName)) {
+                    minimizeFile(file)
+                    jsFile + result.toString()
+                    file.delete()
+                }
             }
-            writeResultToFile(outputFolder + BACK_SLASH + fileName)
         } else {
             fileMap.each { entry ->
+                JsFile resultFile = new JsFile(entry.key);
                 result = new StringBuffer()
                 def list = entry.value
                 list.each {
                     def file = new File(it)
+                    JsFile jsFile = new JsFile(file)
                     minimizeFile(file)
+                    resultFile + result.toString()
                     file.delete()
                 }
-                writeResultToFile(entry.key)
             }
         }
     }
@@ -107,7 +113,7 @@ class JsMinimizerTask extends DefaultTask {
             int nextIndex = buffer.indexOf(SLASH, index + 1)
             if (nextIndex == index + 1) {
                 int newLineIndex = buffer.indexOf(NEW_LINE, index + 1)
-                if(newLineIndex != -1)
+                if (newLineIndex != -1)
                     buffer.delete(index, newLineIndex)
                 else
                     buffer.delete(index, buffer.length())
@@ -117,16 +123,9 @@ class JsMinimizerTask extends DefaultTask {
                     processUnmodifiableBlock(string, index)
                 } else {
                     removeWhitespaces(buffer.subSequence(0, index + 1))
-                    buffer.delete(0, index+1)
+                    buffer.delete(0, index + 1)
                 }
             }
         }
-    }
-
-    void writeResultToFile(String filePath) {
-        File resultFile = new File(filePath)
-        resultFile.createNewFile()
-        resultFile.setWritable(true)
-        resultFile.write(result.toString())
     }
 }
