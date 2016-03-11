@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="cdp.homework" default="install">
+    <import file="dependencies.xml"/>
+
+    <target name="clean" description="Deletes build files">
+        <antcall target="depend.all">
+            <param name="dependency.target" value="clean"/>
+        </antcall>
+    </target>
+
+    <target name="compile" description="Compiles source code">
+        <antcall target="depend.all">
+            <param name="dependency.target" value="compile"/>
+        </antcall>
+    </target>
+
+    <target name="test" description="Run tests">
+        <antcall target="depend.all">
+            <param name="dependency.target" value="test"/>
+        </antcall>
+    </target>
+
+    <target name="build" description="Runs build">
+        <antcall target="depend.all">
+            <param name="dependency.target" value="build"/>
+        </antcall>
+    </target>
+
+    <target name="install" description="installs">
+        <antcall target="depend.admin">
+            <param name="dependency.target" value="jar"/>
+        </antcall>
+        <antcall target="depend.web">
+            <param name="dependency.target" value="war"/>
+        </antcall>
+    </target>
+</project>

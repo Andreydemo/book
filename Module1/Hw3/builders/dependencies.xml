@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="dependencies" default="depend.all">
+    <dirname property="dependencies.basedir" file="${ant.file.dependencies}"/>
+    <!-- ================================================================== -->
+    <target name="depend.all"
+            depends="depend.admin, depend.web">
+    </target>
+    <!-- ================================================================== -->
+    <target name="depend.admin"
+            depends="depend.services, depend.utils">
+        <ant dir="${dependencies.basedir}/admin"
+             target="${dependency.target}" 
+             inheritAll="false"/>
+    </target>
+    <!-- ================================================================== -->
+    <target name="depend.services"
+            depends="depend.utils">
+        <ant dir="${dependencies.basedir}/services"
+             target="${dependency.target}" 
+             inheritAll="false"/>
+    </target>
+    <!-- ================================================================== -->
+    <target name="depend.utils">
+        <ant dir="${dependencies.basedir}/utils"
+             target="${dependency.target}" 
+             inheritAll="false"/>
+    </target>
+    <!-- ================================================================== -->
+    <target name="depend.web"
+            depends="depend.services, depend.utils">
+        <ant dir="${dependencies.basedir}/web"
+             target="${dependency.target}" 
+             inheritAll="false"/>
+    </target>
+</project>

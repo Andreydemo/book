@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="web" default="war">
+    <import file="../build-common.xml"/>
+
+    <target name="war" depends="build.dependencies">
+        <war destfile="web.war" webxml="src/main/webapp/WEB-INF/web.xml">
+            <fileset dir="src/main/webapp">
+                <exclude name="src/main/webapp/WEB-INF/web.xml"/>
+            </fileset>
+            <classes dir="${build.dir}/classes/main"/>
+            <classes dir="${build.dir}/resources/main"/>
+        </war>
+    </target>
+</project>

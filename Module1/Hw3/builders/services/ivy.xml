@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ivy-module version="2.0">
+    <info organisation="com.epam"
+          module="services"
+          revision="1.0">
+        <extends extendType="all"
+                 organisation="com.epam"
+                 module="cdp.homework"
+                 revision="1.0.0"/>
+    </info>
+</ivy-module>

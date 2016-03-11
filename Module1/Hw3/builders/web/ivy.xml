@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ivy-module version="2.0">
+    <info organisation="com.epam"
+          module="web"
+          revision="1.0">
+        <extends extendType="all"
+                 organisation="com.epam"
+                 module="cdp.homework"
+                 revision="1.0.0"/>
+    </info>
+    <dependencies>
+        <dependency org="javax.servlet" name="servlet-api" rev="2.5"/>
+    </dependencies>
+</ivy-module>
