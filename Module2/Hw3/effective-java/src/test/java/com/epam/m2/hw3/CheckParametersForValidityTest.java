@@ -24,19 +24,19 @@ public class CheckParametersForValidityTest {
     }
 
     @Test
-    public void whnSetNullNameThenIllegalArgumentException() {
+    public void whenSetNullNameThenIllegalArgumentException() {
         exception.expectMessage("Name cannot be null or empty");
         person = new Person.Builder(AGE, null).build();
     }
 
     @Test
-    public void whnSetEmptyNameThenIllegalArgumentException() {
+    public void whenSetEmptyNameThenIllegalArgumentException() {
         exception.expectMessage("Name cannot be null or empty");
         person = new Person.Builder(AGE, "").build();
     }
 
     @Test
-    public void whnSetHeightLessThenZeroThenIllegalArgumentException() {
+    public void whenSetHeightLessThenZeroThenIllegalArgumentException() {
         exception.expectMessage("Height has to be higher than zero");
         person = new Person.Builder(AGE, "Andrew").height(-3d).build();
     }
