@@ -2,9 +2,7 @@ package com.epam.cdp.m2.hw2.aggregator;
 
 import javafx.util.Pair;
 
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -30,10 +28,13 @@ public class Java8Aggregator implements Aggregator {
 
     @Override
     public List<String> getDuplicates(List<String> words, long limit) {
-        final Set<String> strings = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        return words.stream().filter(string -> !strings.add(string)).
-                map(String::toUpperCase).
+        return words.stream().map(String::toUpperCase).
+                collect(groupingBy(Function.identity(), counting())).
+                entrySet().
+                stream().filter(e -> e.getValue() > 1).
+                map(Map.Entry::getKey).
                 sorted((a, b) -> a.length() == b.length() ? a.compareTo(b) : a.length() - b.length()).
-                limit(limit).collect(Collectors.toList());
+                limit(limit).
+                collect(Collectors.toList());
     }
 }

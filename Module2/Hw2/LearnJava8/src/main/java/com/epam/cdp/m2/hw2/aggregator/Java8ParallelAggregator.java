@@ -3,8 +3,7 @@ package com.epam.cdp.m2.hw2.aggregator;
 import javafx.util.Pair;
 
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -30,10 +29,13 @@ public class Java8ParallelAggregator implements Aggregator {
 
     @Override
     public List<String> getDuplicates(List<String> words, long limit) {
-        final Set<String> set1 = new ConcurrentSkipListSet<>(String.CASE_INSENSITIVE_ORDER);
-        return words.parallelStream().filter(string -> !set1.add(string)).
-                map(String::toUpperCase).
+        return words.parallelStream().map(String::toUpperCase).
+                collect(Collectors.groupingByConcurrent(Function.identity(), counting())).
+                entrySet().
+                parallelStream().filter(e -> e.getValue() > 1).
+                map(Map.Entry::getKey).
                 sorted((a, b) -> a.length() == b.length() ? a.compareTo(b) : a.length() - b.length()).
-                limit(limit).collect(Collectors.toList());
+                limit(limit).
+                collect(Collectors.toList());
     }
 }
