@@ -28,10 +28,13 @@ public class CacheImpl<KEY, VAL> implements Cache<KEY, VAL> {
         VAL value;
         if (cache.containsKey(key)) {
             lock.lock();
-            CacheEntry entry = cache.get(key);
-            entry.frequency++;
-            value = entry.data;
-            lock.unlock();
+            try {
+                CacheEntry entry = cache.get(key);
+                entry.frequency++;
+                value = entry.data;
+            } finally {
+                lock.unlock();
+            }
         } else {
             value = systemOfRecord.read(key);
             putNewEntryToCache(key, value);
@@ -51,13 +54,16 @@ public class CacheImpl<KEY, VAL> implements Cache<KEY, VAL> {
 
     private void putNewEntryToCache(KEY key, VAL value) {
         lock.lock();
-        if (isFull()) {
-            KEY entryKeyToBeRemoved = getLfuKey();
-            cache.remove(entryKeyToBeRemoved);
+        try {
+            if (isFull()) {
+                KEY entryKeyToBeRemoved = getLfuKey();
+                cache.remove(entryKeyToBeRemoved);
+            }
+            CacheEntry cacheEntry = new CacheEntry(value, 0);
+            cache.put(key, cacheEntry);
+        } finally {
+            lock.unlock();
         }
-        CacheEntry cacheEntry = new CacheEntry(value, 0);
-        cache.put(key, cacheEntry);
-        lock.unlock();
     }
 
     private void putToWriteBehindQueue(VAL value) {
@@ -109,10 +115,6 @@ public class CacheImpl<KEY, VAL> implements Cache<KEY, VAL> {
         CacheEntry(VAL data, int frequency) {
             this.data = data;
             this.frequency = frequency;
-        }
-
-        public VAL getData() {
-            return data;
         }
 
         public int getFrequency() {
