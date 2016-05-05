@@ -1,0 +1,27 @@
+[
+  {
+    "id": "1",
+    "title": "firstEvent",
+    "date": "9999"
+  },
+  {
+    "id": "2",
+    "title": "event",
+    "date": "9999"
+  },
+  {
+    "id": "3",
+    "title": "event",
+    "date": "9999"
+  },
+  {
+    "id": "4",
+    "title": "event",
+    "date": "9999"
+  },
+  {
+    "id": "5",
+    "title": "anotherEvent",
+    "date": "222"
+  }
+]
