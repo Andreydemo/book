@@ -3,9 +3,9 @@ package postProcessor;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import postProcessor.parser.impl.EventsStorageJsonFiller;
-import postProcessor.parser.impl.TicketsStorageJsonFiller;
-import postProcessor.parser.impl.UsersStorageJsonFiller;
+import postProcessor.filler.impl.EventsStorageJsonFiller;
+import postProcessor.filler.impl.TicketsStorageJsonFiller;
+import postProcessor.filler.impl.UsersStorageJsonFiller;
 import storage.Storage;
 
 public class StoragePostProcessor implements BeanPostProcessor {

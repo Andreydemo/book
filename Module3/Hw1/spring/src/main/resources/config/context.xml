@@ -28,13 +28,13 @@
     <bean class="postProcessor.StoragePostProcessor" c:_0-ref="eventsJsonParser" c:_1-ref="usersJsonParser"
           c:_2-ref="ticketsJsonParser"/>
 
-    <bean class="postProcessor.parser.impl.EventsStorageJsonFiller" id="eventsJsonParser" c:_0-ref="storage"
+    <bean class="postProcessor.filler.impl.EventsStorageJsonFiller" id="eventsJsonParser" c:_0-ref="storage"
           c:_1="${file.eventsFilePath}"/>
 
-    <bean class="postProcessor.parser.impl.TicketsStorageJsonFiller" id="ticketsJsonParser" c:_0-ref="storage"
+    <bean class="postProcessor.filler.impl.TicketsStorageJsonFiller" id="ticketsJsonParser" c:_0-ref="storage"
           c:_1="${file.ticketsFilePath}"/>
 
-    <bean class="postProcessor.parser.impl.UsersStorageJsonFiller" id="usersJsonParser" c:_0-ref="storage"
+    <bean class="postProcessor.filler.impl.UsersStorageJsonFiller" id="usersJsonParser" c:_0-ref="storage"
           c:_1="${file.usersFilePath}"/>
 
     <bean id="storage" class="storage.impl.StorageImpl"/>
