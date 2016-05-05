@@ -10,14 +10,14 @@ import storage.Storage;
 
 public class StoragePostProcessor implements BeanPostProcessor {
     private static final Logger logger = Logger.getLogger(StoragePostProcessor.class);
-    private EventsStorageJsonFiller eventsJsonParser;
-    private UsersStorageJsonFiller usersJsonParser;
-    private TicketsStorageJsonFiller ticketsJsonParser;
+    private EventsStorageJsonFiller eventsStorageJsonFiller;
+    private UsersStorageJsonFiller usersStorageJsonFiller;
+    private TicketsStorageJsonFiller ticketsStorageJsonFiller;
 
-    public StoragePostProcessor(EventsStorageJsonFiller eventsJsonParser, UsersStorageJsonFiller usersJsonParser, TicketsStorageJsonFiller ticketsJsonParser) {
-        this.eventsJsonParser = eventsJsonParser;
-        this.usersJsonParser = usersJsonParser;
-        this.ticketsJsonParser = ticketsJsonParser;
+    public StoragePostProcessor(EventsStorageJsonFiller eventsStorageJsonFiller, UsersStorageJsonFiller usersStorageJsonFiller, TicketsStorageJsonFiller ticketsStorageJsonFiller) {
+        this.eventsStorageJsonFiller = eventsStorageJsonFiller;
+        this.usersStorageJsonFiller = usersStorageJsonFiller;
+        this.ticketsStorageJsonFiller = ticketsStorageJsonFiller;
     }
 
     @Override
@@ -29,9 +29,9 @@ public class StoragePostProcessor implements BeanPostProcessor {
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         logger.debug("Post process started");
         if (bean instanceof Storage) {
-            eventsJsonParser.fill();
-            usersJsonParser.fill();
-            ticketsJsonParser.fill();
+            eventsStorageJsonFiller.fill();
+            usersStorageJsonFiller.fill();
+            ticketsStorageJsonFiller.fill();
         }
         logger.debug("Post process finished");
         return bean;
