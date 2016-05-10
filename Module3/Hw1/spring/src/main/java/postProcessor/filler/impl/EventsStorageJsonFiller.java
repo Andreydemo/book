@@ -1,12 +1,11 @@
 package postProcessor.filler.impl;
 
 import model.Event;
-import storage.Storage;
 
 public class EventsStorageJsonFiller extends AbstractStorageJsonFiller<Event> {
 
-    public EventsStorageJsonFiller(Storage storage, String filePath) {
-        super(storage, filePath);
+    public EventsStorageJsonFiller(String filePath) {
+        super(filePath);
     }
 
     @Override

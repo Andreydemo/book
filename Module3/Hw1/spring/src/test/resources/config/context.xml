@@ -8,6 +8,8 @@
       http://www.springframework.org/schema/context
       http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <context:annotation-config/>
+
     <context:property-placeholder location="classpath:properties.properties"/>
 
     <bean class="facade.impl.BookingFacadeImpl" id="bookingFacade" c:_0-ref="eventService" c:_1-ref="userService"
@@ -15,27 +17,28 @@
 
     <bean class="service.impl.TicketServiceImpl" id="ticketService" p:ticketDao-ref="ticketDao"/>
 
-    <bean class="dao.impl.TicketDaoImpl" id="ticketDao" p:storage-ref="storage"/>
+    <bean class="dao.impl.TicketDaoImpl" id="ticketDao"/>
 
     <bean class="service.impl.UserServiceImpl" id="userService" p:userDao-ref="userDao"/>
 
-    <bean class="dao.impl.UserDaoImpl" id="userDao" p:storage-ref="storage"/>
+    <bean class="dao.impl.UserDaoImpl" id="userDao"/>
 
     <bean class="service.impl.EventServiceImpl" id="eventService" p:eventDao-ref="eventDao"/>
 
-    <bean class="dao.impl.EventDaoImpl" id="eventDao" p:storage-ref="storage"/>
+    <bean class="dao.impl.EventDaoImpl" id="eventDao"/>
 
-    <bean class="postProcessor.StoragePostProcessor" c:_0-ref="eventsStorageJsonFiller" c:_1-ref="usersStorageJsonFiller"
+    <bean class="postProcessor.StoragePostProcessor" c:_0-ref="eventsStorageJsonFiller"
+          c:_1-ref="usersStorageJsonFiller"
           c:_2-ref="ticketsStorageJsonFiller"/>
 
-    <bean class="postProcessor.filler.impl.EventsStorageJsonFiller" id="eventsStorageJsonFiller" c:_0-ref="storage"
-          c:_1="${file.eventsFilePath}"/>
+    <bean class="postProcessor.filler.impl.EventsStorageJsonFiller" id="eventsStorageJsonFiller"
+          c:_0="${file.eventsFilePath}"/>
 
-    <bean class="postProcessor.filler.impl.TicketsStorageJsonFiller" id="ticketsStorageJsonFiller" c:_0-ref="storage"
-          c:_1="${file.ticketsFilePath}"/>
+    <bean class="postProcessor.filler.impl.TicketsStorageJsonFiller" id="ticketsStorageJsonFiller"
+          c:_0="${file.ticketsFilePath}"/>
 
-    <bean class="postProcessor.filler.impl.UsersStorageJsonFiller" id="usersStorageJsonFiller" c:_0-ref="storage"
-          c:_1="${file.usersFilePath}"/>
+    <bean class="postProcessor.filler.impl.UsersStorageJsonFiller" id="usersStorageJsonFiller"
+          c:_0="${file.usersFilePath}"/>
 
     <bean id="storage" class="storage.impl.StorageImpl"/>
 </beans>

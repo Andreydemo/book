@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.reflect.TypeToken;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import postProcessor.filler.StorageFiller;
 import storage.Storage;
 
@@ -18,8 +19,7 @@ public abstract class AbstractStorageJsonFiller<T> implements StorageFiller<T> {
     private String filePath;
     protected static final Logger logger = Logger.getLogger(StorageFiller.class);
 
-    public AbstractStorageJsonFiller(Storage storage, String filePath) {
-        this.storage = storage;
+    public AbstractStorageJsonFiller(String filePath) {
         this.filePath = filePath;
     }
 
@@ -38,4 +38,9 @@ public abstract class AbstractStorageJsonFiller<T> implements StorageFiller<T> {
     }
 
     protected abstract void put(T element);
+
+    @Autowired
+    public void setStorage(Storage storage) {
+        this.storage = storage;
+    }
 }

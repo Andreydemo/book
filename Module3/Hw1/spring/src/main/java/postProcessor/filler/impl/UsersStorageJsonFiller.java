@@ -1,12 +1,11 @@
 package postProcessor.filler.impl;
 
 import model.User;
-import storage.Storage;
 
 public class UsersStorageJsonFiller extends AbstractStorageJsonFiller<User> {
 
-    public UsersStorageJsonFiller(Storage storage, String filePath) {
-        super(storage, filePath);
+    public UsersStorageJsonFiller(String filePath) {
+        super(filePath);
     }
 
     @Override

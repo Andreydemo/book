@@ -1,11 +1,10 @@
 package postProcessor.filler.impl;
 
 import model.Ticket;
-import storage.Storage;
 
 public class TicketsStorageJsonFiller extends AbstractStorageJsonFiller<Ticket> {
-    public TicketsStorageJsonFiller(Storage storage, String filePath) {
-        super(storage, filePath);
+    public TicketsStorageJsonFiller(String filePath) {
+        super(filePath);
     }
 
     @Override
