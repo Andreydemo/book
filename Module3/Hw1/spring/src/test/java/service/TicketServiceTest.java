@@ -50,6 +50,8 @@ public class TicketServiceTest {
     @Test
     public void whenBookTicketThenOneIsBooked() {
         Ticket ticket = new TicketImpl(Long.MIN_VALUE, 1, 1, Ticket.Category.STANDARD, 1);
+        when(userDao.getUserById(anyLong())).thenReturn(new UserImpl(1, "", ""));
+        when(eventDao.getEventById(anyLong())).thenReturn(new EventImpl(1, "", new Date()));
         when(ticketDao.bookTicket(anyLong(), anyLong(), anyInt(), any(Ticket.Category.class))).thenReturn(ticket);
         Ticket result = ticketService.bookTicket(1, 1, 1, Ticket.Category.STANDARD);
         assertEquals(ticket, result);
