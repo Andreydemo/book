@@ -15,7 +15,8 @@
     <bean class="facade.impl.BookingFacadeImpl" id="bookingFacade" c:_0-ref="eventService" c:_1-ref="userService"
           c:_2-ref="ticketService"/>
 
-    <bean class="service.impl.TicketServiceImpl" id="ticketService" p:ticketDao-ref="ticketDao"/>
+    <bean class="service.impl.TicketServiceImpl" id="ticketService" p:ticketDao-ref="ticketDao" p:userDao-ref="userDao"
+          p:eventDao-ref="eventDao"/>
 
     <bean class="dao.impl.TicketDaoImpl" id="ticketDao"/>
 

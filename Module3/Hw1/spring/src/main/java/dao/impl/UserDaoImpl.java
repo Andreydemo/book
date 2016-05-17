@@ -31,7 +31,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List getUsersByName(String name, int pageSize, int pageNum) {
-        Predicate<User> predicate = e -> e.getName().equals(name);
+        Predicate<User> predicate = e -> e.getName().contains(name);
         List<User> users = storage.getElementsByPredicate(USER_NAMESPACE, predicate, (a, b) -> a.getName().compareTo(b.getName()), pageSize, pageNum);
         logger.debug("Returning users by name: " + name + " with pageSize: " + pageSize + " and pageNum: " + pageNum + " " + users);
         return users;

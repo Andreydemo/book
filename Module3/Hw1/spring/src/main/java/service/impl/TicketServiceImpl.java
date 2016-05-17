@@ -1,6 +1,8 @@
 package service.impl;
 
+import dao.EventDao;
 import dao.TicketDao;
+import dao.UserDao;
 import model.Event;
 import model.Ticket;
 import model.User;
@@ -12,6 +14,8 @@ import java.util.List;
 public class TicketServiceImpl implements TicketService {
     private static final Logger logger = Logger.getLogger(TicketServiceImpl.class);
     private TicketDao ticketDao;
+    private EventDao eventDao;
+    private UserDao userDao;
 
     @Override
     public Ticket bookTicket(long userId, long eventId, int place, Ticket.Category category) {
@@ -24,6 +28,11 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {
         List<Ticket> tickets = ticketDao.getBookedTickets(user, pageSize, pageNum);
+        tickets.sort((o1, o2) -> {
+            Event event = eventDao.getEventById(o1.getId());
+            Event anotherEvent = eventDao.getEventById(o2.getId());
+            return anotherEvent.getDate().compareTo(event.getDate());
+        });
         logger.debug("Returning booked tickets by user: " + user + " with pageSize: " + pageSize + " and pageNum: " + pageNum + " " + tickets);
         return tickets;
     }
@@ -31,6 +40,11 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum) {
         List<Ticket> tickets = ticketDao.getBookedTickets(event, pageSize, pageNum);
+        tickets.sort((o1, o2) -> {
+            User user = userDao.getUserById(o1.getId());
+            User anotherUser = userDao.getUserById(o2.getId());
+            return user.getEmail().compareTo(anotherUser.getEmail());
+        });
         logger.debug("Returning booked tickets by event: " + event + " with pageSize: " + pageSize + " and pageNum: " + pageNum + " " + tickets);
         return tickets;
     }
@@ -41,8 +55,15 @@ public class TicketServiceImpl implements TicketService {
         return ticketDao.cancelTicket(ticketId);
     }
 
-    @Override
     public void setTicketDao(TicketDao ticketDao) {
         this.ticketDao = ticketDao;
+    }
+
+    public void setEventDao(EventDao eventDao) {
+        this.eventDao = eventDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 }

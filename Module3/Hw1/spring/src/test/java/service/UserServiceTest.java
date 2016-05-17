@@ -21,7 +21,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class UserServiceTest {
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Mock
     UserDao userDao;
@@ -84,7 +84,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void whenDeleteUSerThenOneIsDeleted() {
+    public void whenDeleteUserThenOneIsDeleted() {
         when(userDao.deleteUser(anyLong())).thenReturn(true);
         boolean result = userService.deleteUser(1);
         assertTrue(result);

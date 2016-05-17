@@ -1,14 +1,11 @@
 package service;
 
 import model.Event;
-import dao.EventDao;
 
 import java.util.Date;
 import java.util.List;
 
 public interface EventService {
-    void setEventDao(EventDao eventDao);
-
     Event getEventById(long id);
 
     List<Event> getEventsByTitle(String title, int pageSize, int pageNum);

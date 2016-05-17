@@ -60,7 +60,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }

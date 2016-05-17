@@ -51,7 +51,6 @@ public class EventServiceImpl implements EventService {
         return eventDao.deleteEvent(eventId);
     }
 
-    @Override
     public void setEventDao(EventDao eventDao) {
         this.eventDao = eventDao;
     }
