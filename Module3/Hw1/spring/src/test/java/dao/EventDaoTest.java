@@ -1,6 +1,5 @@
 package dao;
 
-import dao.EventDao;
 import dao.impl.EventDaoImpl;
 import model.Event;
 import model.impl.EventImpl;
@@ -22,7 +21,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class EventDaoTest {
-    private EventDao eventDao;
+    private EventDaoImpl eventDao;
 
     @Mock
     Storage storage;

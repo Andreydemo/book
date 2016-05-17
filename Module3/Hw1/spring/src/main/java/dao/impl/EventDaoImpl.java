@@ -4,7 +4,6 @@ import dao.EventDao;
 import model.Event;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import storage.Storage;
 
 import java.util.Date;
@@ -57,8 +56,6 @@ public class EventDaoImpl implements EventDao {
         return storage.delete(EVENT_NAMESPACE + eventId);
     }
 
-    @Override
-    @Autowired
     public void setStorage(Storage storage) {
         this.storage = storage;
     }

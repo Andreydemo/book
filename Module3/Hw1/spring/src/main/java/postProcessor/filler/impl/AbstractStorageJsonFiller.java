@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.reflect.TypeToken;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import postProcessor.filler.StorageFiller;
 import storage.Storage;
 
@@ -29,9 +28,9 @@ public abstract class AbstractStorageJsonFiller<T> implements StorageFiller<T> {
         builder.registerTypeAdapter(Date.class, (JsonDeserializer<Date>) (json, typeOfT, context) -> new Date(json.getAsJsonPrimitive().getAsLong()));
         Gson gson = builder.create();
         try {
-            List<? extends T> events = gson.fromJson(new FileReader(filePath), new TypeToken<List<T>>() {
+            List<? extends T> list = gson.fromJson(new FileReader(filePath), new TypeToken<List<T>>() {
             }.getType());
-            events.forEach(this::put);
+            list.forEach(this::put);
         } catch (FileNotFoundException e) {
             logger.error("Cannot find file with path: " + filePath);
         }
@@ -39,7 +38,6 @@ public abstract class AbstractStorageJsonFiller<T> implements StorageFiller<T> {
 
     protected abstract void put(T element);
 
-    @Autowired
     public void setStorage(Storage storage) {
         this.storage = storage;
     }

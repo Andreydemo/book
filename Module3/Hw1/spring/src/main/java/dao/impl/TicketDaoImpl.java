@@ -6,7 +6,6 @@ import model.Ticket;
 import model.User;
 import model.impl.TicketImpl;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import storage.Storage;
 
 import java.util.List;
@@ -49,8 +48,6 @@ public class TicketDaoImpl implements TicketDao {
         return storage.delete(TICKET_NAMESPACE + ticketId);
     }
 
-    @Override
-    @Autowired
     public void setStorage(Storage storage) {
         this.storage = storage;
     }

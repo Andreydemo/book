@@ -1,6 +1,5 @@
 package dao;
 
-import dao.UserDao;
 import dao.impl.UserDaoImpl;
 import model.User;
 import model.impl.UserImpl;
@@ -12,13 +11,14 @@ import storage.Storage;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class UserDaoTest {
-    private UserDao userDao;
+    private UserDaoImpl userDao;
 
     @Mock
     Storage storage;

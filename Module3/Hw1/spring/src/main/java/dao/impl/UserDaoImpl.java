@@ -3,7 +3,6 @@ package dao.impl;
 import dao.UserDao;
 import model.User;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import storage.Storage;
 
 import java.util.List;
@@ -55,8 +54,6 @@ public class UserDaoImpl implements UserDao {
         return storage.delete(USER_NAMESPACE + userId);
     }
 
-    @Override
-    @Autowired
     public void setStorage(Storage storage) {
         this.storage = storage;
     }

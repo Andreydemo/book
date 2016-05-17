@@ -8,8 +8,6 @@
       http://www.springframework.org/schema/context
       http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:annotation-config/>
-
     <context:property-placeholder location="classpath:properties.properties"/>
 
     <bean class="facade.impl.BookingFacadeImpl" id="bookingFacade" c:_0-ref="eventService" c:_1-ref="userService"
@@ -18,28 +16,28 @@
     <bean class="service.impl.TicketServiceImpl" id="ticketService" p:ticketDao-ref="ticketDao" p:userDao-ref="userDao"
           p:eventDao-ref="eventDao"/>
 
-    <bean class="dao.impl.TicketDaoImpl" id="ticketDao"/>
+    <bean class="dao.impl.TicketDaoImpl" id="ticketDao" autowire="byName"/>
 
     <bean class="service.impl.UserServiceImpl" id="userService" p:userDao-ref="userDao"/>
 
-    <bean class="dao.impl.UserDaoImpl" id="userDao"/>
+    <bean class="dao.impl.UserDaoImpl" id="userDao" autowire="byName"/>
 
     <bean class="service.impl.EventServiceImpl" id="eventService" p:eventDao-ref="eventDao"/>
 
-    <bean class="dao.impl.EventDaoImpl" id="eventDao"/>
+    <bean class="dao.impl.EventDaoImpl" id="eventDao" autowire="byName"/>
 
     <bean class="postProcessor.StoragePostProcessor" c:_0-ref="eventsStorageJsonFiller"
           c:_1-ref="usersStorageJsonFiller"
           c:_2-ref="ticketsStorageJsonFiller"/>
 
     <bean class="postProcessor.filler.impl.EventsStorageJsonFiller" id="eventsStorageJsonFiller"
-          c:_0="${file.eventsFilePath}"/>
+          c:_0="${file.eventsFilePath}" autowire="byName"/>
 
     <bean class="postProcessor.filler.impl.TicketsStorageJsonFiller" id="ticketsStorageJsonFiller"
-          c:_0="${file.ticketsFilePath}"/>
+          c:_0="${file.ticketsFilePath}" autowire="byName"/>
 
     <bean class="postProcessor.filler.impl.UsersStorageJsonFiller" id="usersStorageJsonFiller"
-          c:_0="${file.usersFilePath}"/>
+          c:_0="${file.usersFilePath}" autowire="byName"/>
 
     <bean id="storage" class="storage.impl.StorageImpl"/>
 </beans>

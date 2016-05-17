@@ -1,7 +1,6 @@
 package dao;
 
 import model.Event;
-import storage.Storage;
 
 import java.util.Date;
 import java.util.List;
@@ -18,6 +17,4 @@ public interface EventDao {
     Event updateEvent(Event event);
 
     boolean deleteEvent(long eventId);
-
-    void setStorage(Storage storage);
 }

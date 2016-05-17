@@ -3,7 +3,6 @@ package dao;
 import model.Event;
 import model.Ticket;
 import model.User;
-import storage.Storage;
 
 import java.util.List;
 
@@ -15,6 +14,4 @@ public interface TicketDao {
     List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum);
 
     boolean cancelTicket(long ticketId);
-
-    void setStorage(Storage storage);
 }

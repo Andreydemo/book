@@ -1,7 +1,6 @@
 package dao;
 
 import model.User;
-import storage.Storage;
 
 import java.util.List;
 
@@ -17,6 +16,4 @@ public interface UserDao {
     User updateUser(User user);
 
     boolean deleteUser(long userId);
-
-    void setStorage(Storage storage);
 }

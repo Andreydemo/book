@@ -1,6 +1,5 @@
 package dao;
 
-import dao.TicketDao;
 import dao.impl.TicketDaoImpl;
 import model.Event;
 import model.Ticket;
@@ -17,13 +16,14 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class TicketDaoTest {
-    private TicketDao ticketDao;
+    private TicketDaoImpl ticketDao;
 
     @Mock
     Storage storage;
