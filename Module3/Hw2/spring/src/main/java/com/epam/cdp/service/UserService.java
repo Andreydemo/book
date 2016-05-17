@@ -1,14 +1,12 @@
 package com.epam.cdp.service;
 
 import com.epam.cdp.dao.UserAccountDao;
-import com.epam.cdp.dao.UserDao;
 import com.epam.cdp.model.User;
+import com.epam.cdp.repository.UserRepository;
 
 import java.util.List;
 
 public interface UserService {
-    void setUserDao(UserDao userDao);
-
     User getUserById(long id);
 
     User getUserByEmail(String email);
@@ -22,4 +20,6 @@ public interface UserService {
     boolean deleteUser(long userId);
 
     void setUserAccountDao(UserAccountDao userAccountDao);
+
+    void setUserRepository(UserRepository userRepository);
 }
