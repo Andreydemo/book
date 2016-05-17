@@ -20,9 +20,12 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public Ticket bookTicket(long userId, long eventId, int place, Ticket.Category category) {
         logger.debug("Booking ticket");
-        Ticket ticket = ticketDao.bookTicket(userId, eventId, place, category);
-        logger.debug("Booked ticket: " + ticket);
-        return ticket;
+        if (isTicketCanBeBooked(userId, eventId)) {
+            Ticket ticket = ticketDao.bookTicket(userId, eventId, place, category);
+            logger.debug("Booked ticket: " + ticket);
+            return ticket;
+        }
+        return null;
     }
 
     @Override
@@ -53,6 +56,18 @@ public class TicketServiceImpl implements TicketService {
     public boolean cancelTicket(long ticketId) {
         logger.debug("Canceling ticket with id: " + ticketId);
         return ticketDao.cancelTicket(ticketId);
+    }
+
+    private boolean isTicketCanBeBooked(long userId, long eventId) {
+        if (eventDao.getEventById(eventId) == null) {
+            logger.debug("Such event does not exist, ticket cannot be booked, returning null");
+            return false;
+        }
+        if (userDao.getUserById(userId) == null) {
+            logger.debug("Such user does not exist, ticket cannot be booked, returning null");
+            return false;
+        }
+        return true;
     }
 
     public void setTicketDao(TicketDao ticketDao) {
