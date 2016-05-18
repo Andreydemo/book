@@ -10,8 +10,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static storage.NamespaceConstants.EVENT_NAMESPACE;
+
 public class EventDaoImpl implements EventDao {
-    public static final String EVENT_NAMESPACE = "event:";
     private static final Logger logger = Logger.getLogger(EventDaoImpl.class);
     private Storage storage;
 

@@ -13,8 +13,11 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 
+import static storage.NamespaceConstants.EVENT_NAMESPACE;
+import static storage.NamespaceConstants.TICKET_NAMESPACE;
+import static storage.NamespaceConstants.USER_NAMESPACE;
+
 public class TicketDaoImpl implements TicketDao {
-    public static final String TICKET_NAMESPACE = "ticket:";
     private static final Logger logger = Logger.getLogger(TicketDaoImpl.class);
     private Storage storage;
     private AtomicLong id = new AtomicLong(Long.MIN_VALUE);
@@ -31,8 +34,8 @@ public class TicketDaoImpl implements TicketDao {
     public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {
         Predicate<Ticket> predicate = e -> e.getUserId() == user.getId();
         Comparator<Ticket> comparator = (o1, o2) -> {
-            Event event = storage.getEntityById("event:" + o1.getEventId());
-            Event anotherEvent = storage.getEntityById("event:" + o1.getEventId());
+            Event event = storage.getEntityById(EVENT_NAMESPACE + o1.getEventId());
+            Event anotherEvent = storage.getEntityById(EVENT_NAMESPACE + o1.getEventId());
             return anotherEvent.getDate().compareTo(event.getDate());
         };
         List<Ticket> tickets = storage.getElementsByPredicate(TICKET_NAMESPACE, predicate, comparator, pageSize, pageNum);
@@ -44,8 +47,8 @@ public class TicketDaoImpl implements TicketDao {
     public List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum) {
         Predicate<Ticket> predicate = e -> e.getEventId() == event.getId();
         Comparator<Ticket> comparator = (o1, o2) -> {
-            User user = storage.getEntityById("user:" + o1.getUserId());
-            User anotherUser = storage.getEntityById("user:" + o2.getUserId());
+            User user = storage.getEntityById(USER_NAMESPACE + o1.getUserId());
+            User anotherUser = storage.getEntityById(USER_NAMESPACE + o2.getUserId());
             return user.getEmail().compareTo(anotherUser.getEmail());
         };
         List<Ticket> tickets = storage.getElementsByPredicate(TICKET_NAMESPACE, predicate, comparator, pageSize, pageNum);

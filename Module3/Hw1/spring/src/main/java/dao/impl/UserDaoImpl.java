@@ -8,8 +8,9 @@ import storage.Storage;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static storage.NamespaceConstants.USER_NAMESPACE;
+
 public class UserDaoImpl implements UserDao {
-    public static final String USER_NAMESPACE = "user:";
     private static final Logger logger = Logger.getLogger(UserDaoImpl.class);
     private Storage storage;
 
