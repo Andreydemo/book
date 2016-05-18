@@ -20,22 +20,22 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public Ticket bookTicket(long userId, long eventId, int place, Ticket.Category category) {
         logger.debug("Booking ticket");
-        if (isTicketCanBeBooked(userId, eventId)) {
+        if (isEventExists(eventId) && isUserExists(userId)) {
+            if (isPlaceAlreadyBooked(eventId, place)) {
+                logger.debug("Place " + place + " is already booked for eventId: " + eventId);
+                throw new IllegalStateException("Place " + place + " is already booked for eventId: " + eventId);
+            }
             Ticket ticket = ticketDao.bookTicket(userId, eventId, place, category);
             logger.debug("Booked ticket: " + ticket);
             return ticket;
         }
+        logger.debug("Such user or/and event does not exist, ticket cannot be booked");
         return null;
     }
 
     @Override
     public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {
         List<Ticket> tickets = ticketDao.getBookedTickets(user, pageSize, pageNum);
-        tickets.sort((o1, o2) -> {
-            Event event = eventDao.getEventById(o1.getId());
-            Event anotherEvent = eventDao.getEventById(o2.getId());
-            return anotherEvent.getDate().compareTo(event.getDate());
-        });
         logger.debug("Returning booked tickets by user: " + user + " with pageSize: " + pageSize + " and pageNum: " + pageNum + " " + tickets);
         return tickets;
     }
@@ -43,11 +43,6 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum) {
         List<Ticket> tickets = ticketDao.getBookedTickets(event, pageSize, pageNum);
-        tickets.sort((o1, o2) -> {
-            User user = userDao.getUserById(o1.getId());
-            User anotherUser = userDao.getUserById(o2.getId());
-            return user.getEmail().compareTo(anotherUser.getEmail());
-        });
         logger.debug("Returning booked tickets by event: " + event + " with pageSize: " + pageSize + " and pageNum: " + pageNum + " " + tickets);
         return tickets;
     }
@@ -58,16 +53,21 @@ public class TicketServiceImpl implements TicketService {
         return ticketDao.cancelTicket(ticketId);
     }
 
-    private boolean isTicketCanBeBooked(long userId, long eventId) {
-        if (eventDao.getEventById(eventId) == null) {
-            logger.debug("Such event does not exist, ticket cannot be booked, returning null");
-            return false;
+    private boolean isUserExists(long userId) {
+        return userDao.getUserById(userId) != null;
+    }
+
+    private boolean isEventExists(long eventId) {
+        return eventDao.getEventById(eventId) != null;
+    }
+
+    private boolean isPlaceAlreadyBooked(long eventId, int place) {
+        List<Ticket> bookedTickets = getBookedTickets(eventDao.getEventById(eventId), Integer.MAX_VALUE, 1);
+        for (Ticket ticket : bookedTickets) {
+            if (ticket.getPlace() == place)
+                return true;
         }
-        if (userDao.getUserById(userId) == null) {
-            logger.debug("Such user does not exist, ticket cannot be booked, returning null");
-            return false;
-        }
-        return true;
+        return false;
     }
 
     public void setTicketDao(TicketDao ticketDao) {

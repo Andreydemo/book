@@ -10,7 +10,9 @@ import model.impl.EventImpl;
 import model.impl.TicketImpl;
 import model.impl.UserImpl;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import service.impl.TicketServiceImpl;
 
@@ -90,5 +92,18 @@ public class TicketServiceTest {
         boolean result = ticketService.cancelTicket(ticket.getId());
         assertTrue(result);
     }
-}
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
+    @Test
+    public void whenBookTicketWithAlreadyBookedPlaceThenThrowIllegalStateException() {
+        exception.expect(IllegalStateException.class);
+        List<Ticket> expected = Arrays.asList(new TicketImpl(1, 1, 1, Ticket.Category.PREMIUM, 1));
+        when(userDao.getUserById(1)).thenReturn(new UserImpl(1, "name", "a@a.com"));
+        when(eventDao.getEventById(1)).thenReturn(new EventImpl(1, "title", new Date()));
+        when(ticketDao.getBookedTickets(any(Event.class), anyInt(), anyInt())).thenReturn(expected);
+        Ticket ticket1 = ticketService.bookTicket(1, 1, 1, Ticket.Category.BAR);
+        System.out.println(ticket1);
+    }
+}

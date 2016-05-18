@@ -10,7 +10,7 @@ import java.util.List;
 
 public class EventServiceImpl implements EventService {
     private static final Logger logger = Logger.getLogger(EventServiceImpl.class);
-    EventDao eventDao;
+    private EventDao eventDao;
 
     @Override
     public Event getEventById(long id) {

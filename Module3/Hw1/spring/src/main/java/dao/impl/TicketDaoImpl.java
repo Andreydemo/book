@@ -8,6 +8,7 @@ import model.impl.TicketImpl;
 import org.apache.log4j.Logger;
 import storage.Storage;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
@@ -29,7 +30,12 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {
         Predicate<Ticket> predicate = e -> e.getUserId() == user.getId();
-        List<Ticket> tickets = storage.getElementsByPredicate(TICKET_NAMESPACE, predicate, (a, b) -> Long.compare(a.getId(), b.getId()), pageSize, pageNum);
+        Comparator<Ticket> comparator = (o1, o2) -> {
+            Event event = storage.getEntityById("event:" + o1.getEventId());
+            Event anotherEvent = storage.getEntityById("event:" + o1.getEventId());
+            return anotherEvent.getDate().compareTo(event.getDate());
+        };
+        List<Ticket> tickets = storage.getElementsByPredicate(TICKET_NAMESPACE, predicate, comparator, pageSize, pageNum);
         logger.debug("Returning booked tickets by user: " + user + " with pageSize: " + pageSize + " and pageNum: " + pageNum + " " + tickets);
         return tickets;
     }
@@ -37,7 +43,12 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum) {
         Predicate<Ticket> predicate = e -> e.getEventId() == event.getId();
-        List<Ticket> tickets = storage.getElementsByPredicate(TICKET_NAMESPACE, predicate, (a, b) -> Long.compare(a.getId(), b.getId()), pageSize, pageNum);
+        Comparator<Ticket> comparator = (o1, o2) -> {
+            User user = storage.getEntityById("user:" + o1.getUserId());
+            User anotherUser = storage.getEntityById("user:" + o2.getUserId());
+            return user.getEmail().compareTo(anotherUser.getEmail());
+        };
+        List<Ticket> tickets = storage.getElementsByPredicate(TICKET_NAMESPACE, predicate, comparator, pageSize, pageNum);
         logger.debug("Returning booked tickets by event: " + event + " with pageSize: " + pageSize + " and pageNum: " + pageNum + " " + tickets);
         return tickets;
     }
