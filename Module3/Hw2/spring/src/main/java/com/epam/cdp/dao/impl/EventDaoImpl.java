@@ -31,7 +31,7 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public List<Event> getEventsByTitle(String title, int pageSize, int pageNum) {
-        String sql = "Select id, title, date, ticketPrice from event where title like ? limit ?,?";
+        String sql = "Select id, title, date, ticketPrice from event where title like ? order by id limit ?,?";
         List<Event> events = jdbcTemplate.query(sql, new Object[]{"%" + title + "%", pageSize * pageNum - pageSize, pageSize}, new EventRowMapper());
         logger.debug("Returning events by title: " + title + " with pageSize: " + pageSize + " and pageNum: " + pageNum + " " + events);
         return events;
@@ -39,7 +39,7 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public List<Event> getEventsForDay(Date day, int pageSize, int pageNum) {
-        String sql = "Select id, title, date, ticketPrice from event where cast(date AS DATE) = cast(? AS DATE) limit ?,?";
+        String sql = "Select id, title, date, ticketPrice from event where cast(date AS DATE) = cast(? AS DATE) order by id limit ?,?";
         return jdbcTemplate.query(sql, new Object[]{new java.sql.Date(day.getTime()), pageSize * pageNum - pageSize, pageSize}, new EventRowMapper());
     }
 
@@ -72,7 +72,6 @@ public class EventDaoImpl implements EventDao {
     }
 
     @Autowired
-    @Override
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

@@ -2,11 +2,12 @@ package com.epam.cdp.model.impl;
 
 import com.epam.cdp.model.Event;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
-public class EventImpl implements Event {
+public class EventImpl implements Event, Serializable {
     private long id;
     private String title;
     private Date date;

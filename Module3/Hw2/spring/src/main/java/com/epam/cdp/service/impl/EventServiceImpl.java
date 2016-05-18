@@ -67,7 +67,6 @@ public class EventServiceImpl implements EventService {
     }
 
     @Autowired
-    @Override
     public void setEventDao(EventDao eventDao) {
         this.eventDao = eventDao;
     }

@@ -2,10 +2,11 @@ package com.epam.cdp.model.impl;
 
 import com.epam.cdp.model.UserAccount;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class UserAccountImpl implements UserAccount {
+public class UserAccountImpl implements UserAccount, Serializable {
     private long id;
     private long userId;
     private BigDecimal balance;

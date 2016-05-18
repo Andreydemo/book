@@ -1,5 +1,6 @@
 package com.epam.cdp.dao;
 
+import com.epam.cdp.entityHolder.EntityHolderImpl;
 import com.epam.cdp.model.Event;
 import com.epam.cdp.model.Ticket;
 import com.epam.cdp.model.User;
@@ -29,6 +30,9 @@ public class TicketDaoTest {
     @Autowired
     private TicketDao ticketDao;
 
+    @Autowired
+    private EntityHolderImpl entityHolder;
+
     @Test
     public void whenBookTicketThenOneIsBooked() {
         Ticket ticket = new TicketImpl(1, 1, 1, Ticket.Category.STANDART, 1);
@@ -46,6 +50,7 @@ public class TicketDaoTest {
         User user = new UserImpl(1, "test", "test@test.com");
         List<Object> expected = Arrays.asList(ticket, ticket2);
         List<Ticket> result = ticketDao.getBookedTickets(user, 4, 1);
+        System.out.println(result);
         assertEquals(expected, result);
     }
 

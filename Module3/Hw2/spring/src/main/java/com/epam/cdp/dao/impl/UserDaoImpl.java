@@ -36,9 +36,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List getUsersByName(String name, int pageSize, int pageNum) {
-        String sql = "Select * from user where name = ? limit ?,?";
-        List<User> users = jdbcTemplate.query(sql, new Object[]{name, pageSize * pageNum - pageSize, pageSize}, new UserRowMapper());
+    public List<User> getUsersByName(String name, int pageSize, int pageNum) {
+        String sql = "Select * from user where name like ? order by id limit ?,?";
+        List<User> users = jdbcTemplate.query(sql, new Object[]{"%" + name + "%", pageSize * pageNum - pageSize, pageSize}, new UserRowMapper());
         logger.debug("Returning users by name: " + name + " with pageSize: " + pageSize + " and pageNum: " + pageNum + " " + users);
         return users;
     }

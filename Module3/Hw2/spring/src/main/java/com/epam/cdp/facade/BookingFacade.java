@@ -158,17 +158,26 @@ public interface BookingFacade {
      */
     boolean cancelTicket(long ticketId);
 
-    UserAccount getUserAccountById(long id);
-
+    /**
+     * Gets UserAccount by user id.
+     * @param userId id of user to get userAccount
+     * @return UserAccount of user
+     */
     UserAccount getUserAccountByUserId(long userId);
 
-    UserAccount createUserAccount(UserAccount userAccount);
-
+    /**
+     * Refills user account
+     * @param userId id of user to refill its account
+     * @param amount amount of money to refill
+     */
     void refillAccount(long userId, BigDecimal amount);
 
-    void deleteUserAccountByUserId(long userId);
-
-    void withdrawMoneyFromUsersAccount(long userId, BigDecimal amount);
-
+    /**
+     * Preload tickets
+     */
     void preloadTickets();
+
+    void setDefaultUser(User user);
+
+    void setDefaultEvent(Event event);
 }

@@ -1,3 +1,5 @@
+package com.epam.cdp;
+
 import com.epam.cdp.facade.BookingFacade;
 import com.epam.cdp.model.Event;
 import com.epam.cdp.model.Ticket;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -97,10 +100,46 @@ public class IntegrationTest {
         assertEquals(registeredUser.getId(), userAccount.getUserId());
         assertEquals(new BigDecimal("400.00"), userAccount.getBalance());
 
-        Event event = new EventImpl(10, "testEvent", new Date(), new BigDecimal("1.00"));
+        Event event = new EventImpl(10, "testEvent", new Date(), new BigDecimal("100.00"));
         Event registeredEvent = bookingFacade.createEvent(event);
         bookingFacade.bookTicket(registeredUser.getId(), registeredEvent.getId(), 1, Ticket.Category.PREMIUM);
         UserAccount userAccountAfterBooking = bookingFacade.getUserAccountByUserId(registeredUser.getId());
         assertEquals(userAccount.getBalance().subtract(event.getTicketPrice()), userAccountAfterBooking.getBalance());
+    }
+
+    @Test
+    public void testGetBookedTicketsWithDefaultUser() {
+        User user = new UserImpl("John", "john@john.com");
+        User defaultUser = bookingFacade.createUser(user);
+        bookingFacade.refillAccount(defaultUser.getId(), new BigDecimal("200.00"));
+        bookingFacade.setDefaultUser(defaultUser);
+
+        user = new UserImpl("dsadsa", "dsada@dsad.dasd");
+        User registeredUser = bookingFacade.createUser(user);
+
+        Event event = new EventImpl(10, "testEvent", new Date(), new BigDecimal("100.00"));
+        Event registeredEvent = bookingFacade.createEvent(event);
+        bookingFacade.bookTicket(defaultUser.getId(), registeredEvent.getId(), 1, Ticket.Category.PREMIUM);
+
+        List<Ticket> tickets = bookingFacade.getBookedTickets(registeredUser, 10, 1);
+        assertEquals(defaultUser.getId(), tickets.get(0).getUserId());
+    }
+
+    @Test
+    public void testGetBookedTicketsWithDefaultEvent() {
+        Event event = new EventImpl(10, "testEvent", new Date(), new BigDecimal("100.00"));
+        Event defaultEvent = bookingFacade.createEvent(event);
+        bookingFacade.setDefaultEvent(defaultEvent);
+
+        User user = new UserImpl("John", "john@john.com");
+        User registeredUser = bookingFacade.createUser(user);
+        bookingFacade.refillAccount(registeredUser.getId(), new BigDecimal("200.00"));
+
+        event = new EventImpl(102, "dsadsad", new Date(21321), new BigDecimal("30.10"));
+        Event registeredEvent = bookingFacade.createEvent(event);
+        bookingFacade.bookTicket(registeredUser.getId(), defaultEvent.getId(), 1, Ticket.Category.PREMIUM);
+
+        List<Ticket> tickets = bookingFacade.getBookedTickets(registeredEvent, 10, 1);
+        assertEquals(defaultEvent.getId(), tickets.get(0).getEventId());
     }
 }

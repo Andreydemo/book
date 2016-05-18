@@ -5,10 +5,13 @@ import com.epam.cdp.dao.mapper.TicketRowMapper;
 import com.epam.cdp.model.Event;
 import com.epam.cdp.model.Ticket;
 import com.epam.cdp.model.User;
+import com.epam.cdp.entityHolder.EntityHolder;
+import com.epam.cdp.dao.parameterSource.DefaultEntitySqlParameterSource;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +23,8 @@ import java.util.Map;
 public class TicketDaoImpl implements TicketDao {
     private static final Logger logger = Logger.getLogger(TicketDaoImpl.class);
     private JdbcTemplate jdbcTemplate;
+    private EntityHolder entityHolder;
+
 
     @Override
     public Ticket bookTicket(long userId, long eventId, int place, Ticket.Category category) {
@@ -37,16 +42,30 @@ public class TicketDaoImpl implements TicketDao {
 
     @Override
     public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {
-        String sql = "Select * from ticket where userId = ? limit ?, ?";
-        List<Ticket> tickets = jdbcTemplate.query(sql, new Object[]{user.getId(), pageSize * pageNum - pageSize, pageSize}, new TicketRowMapper());
+        String sql = "Select ticket.id, eventId, userId, category, place from ticket join event on ticket.eventId = event.id where userId = :userId order by event.date desc limit :from,:size ";
+        DefaultEntitySqlParameterSource sqlParameterSource = new DefaultEntitySqlParameterSource(entityHolder);
+        sqlParameterSource.
+                addValue("userId", user.getId()).
+                addValue("from", pageSize * pageNum - pageSize).
+                addValue("size", pageSize);
+
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+        List<Ticket> tickets = namedParameterJdbcTemplate.query(sql, sqlParameterSource, new TicketRowMapper());
         logger.debug("Returning booked tickets by user: " + user + " with pageSize: " + pageSize + " and pageNum: " + pageNum + " " + tickets);
         return tickets;
     }
 
     @Override
     public List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum) {
-        String sql = "Select * from ticket where eventId = ? limit ?, ?";
-        List<Ticket> tickets = jdbcTemplate.query(sql, new Object[]{event.getId(), pageSize * pageNum - pageSize, pageSize}, new TicketRowMapper());
+        String sql = "Select ticket.id, eventId, userId, category, place from ticket join user on ticket.userId = user.id where eventId = :eventId order by user.email asc limit :from,:size";
+        DefaultEntitySqlParameterSource sqlParameterSource = new DefaultEntitySqlParameterSource(entityHolder);
+        sqlParameterSource.
+                addValue("eventId", event.getId()).
+                addValue("from", pageSize * pageNum - pageSize).
+                addValue("size", pageSize);
+
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+        List<Ticket> tickets = namedParameterJdbcTemplate.query(sql, sqlParameterSource, new TicketRowMapper());
         logger.debug("Returning booked tickets by event: " + event + " with pageSize: " + pageSize + " and pageNum: " + pageNum + ", " + tickets);
         return tickets;
     }
@@ -68,5 +87,10 @@ public class TicketDaoImpl implements TicketDao {
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Autowired
+    public void setEntityHolder(EntityHolder entityHolder) {
+        this.entityHolder = entityHolder;
     }
 }

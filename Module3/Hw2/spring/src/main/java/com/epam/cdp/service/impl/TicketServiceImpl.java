@@ -3,16 +3,16 @@ package com.epam.cdp.service.impl;
 import com.epam.cdp.dao.EventDao;
 import com.epam.cdp.dao.TicketDao;
 import com.epam.cdp.dao.UserAccountDao;
-import com.epam.cdp.exception.ApplicationException;
+import com.epam.cdp.dao.UserDao;
 import com.epam.cdp.model.Event;
 import com.epam.cdp.model.Ticket;
 import com.epam.cdp.model.User;
 import com.epam.cdp.model.UserAccount;
+import com.epam.cdp.service.TicketService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.epam.cdp.service.TicketService;
 
 import java.util.List;
 
@@ -22,22 +22,33 @@ public class TicketServiceImpl implements TicketService {
     private TicketDao ticketDao;
     private UserAccountDao userAccountDao;
     private EventDao eventDao;
+    private UserDao userDao;
 
     @Transactional
     @Override
     public Ticket bookTicket(long userId, long eventId, int place, Ticket.Category category) {
         logger.debug("Booking ticket");
-        Event event = eventDao.getEventById(eventId);
-        UserAccount userAccount = userAccountDao.getUserAccountByUserId(userId);
-        if (userAccount.getBalance().compareTo(event.getTicketPrice()) >= 0) {
-            logger.debug("Enough amount to buy a ticket, withdrawing " + event.getTicketPrice() + " from users account");
-            userAccountDao.withdraw(userId, event.getTicketPrice());
-            Ticket ticket = ticketDao.bookTicket(userId, eventId, place, category);
-            logger.debug("Booked ticket: " + ticket);
-            return ticket;
+        if (isUserExists(userId) && isEventExists(eventId)) {
+            if (isPlaceAlreadyBooked(eventId, place)) {
+                logger.debug("Place " + place + " is already booked for eventId: " + eventId);
+                throw new IllegalStateException("Place " + place + " is already booked for eventId: " + eventId);
+            }
+            Event event = eventDao.getEventById(eventId);
+            UserAccount userAccount = userAccountDao.getUserAccountByUserId(userId);
+            if (isEnoughMoneyOnAccount(event, userAccount)) {
+                userAccountDao.withdraw(userId, event.getTicketPrice());
+                Ticket ticket = ticketDao.bookTicket(userId, eventId, place, category);
+                logger.debug("Booked ticket: " + ticket);
+                return ticket;
+            }
+            logger.warn("Unable to book a ticket, ticket price is " + event.getTicketPrice() + ", but account has " + userAccount.getBalance());
         }
-        logger.warn("Unable to book a ticket, ticket price is " + event.getTicketPrice() + ", but account has " + userAccount.getBalance());
-        throw new ApplicationException("Ticket cannot be booked because user does not have enough money on his account");
+        logger.debug("Ticket for userId: " + userId + " and eventId: " + eventId + " and place: " + place + " cannot be booked");
+        return null;
+    }
+
+    private boolean isEnoughMoneyOnAccount(Event event, UserAccount userAccount) {
+        return userAccount.getBalance().compareTo(event.getTicketPrice()) >= 0;
     }
 
     @Override
@@ -60,21 +71,40 @@ public class TicketServiceImpl implements TicketService {
         return ticketDao.cancelTicket(ticketId);
     }
 
-    @Override
+    private boolean isUserExists(long userId) {
+        return userDao.getUserById(userId) != null;
+    }
+
+    private boolean isEventExists(long eventId) {
+        return eventDao.getEventById(eventId) != null;
+    }
+
+    private boolean isPlaceAlreadyBooked(long eventId, int place) {
+        List<Ticket> bookedTickets = getBookedTickets(eventDao.getEventById(eventId), Integer.MAX_VALUE, 1);
+        for (Ticket ticket : bookedTickets) {
+            if (ticket.getPlace() == place)
+                return true;
+        }
+        return false;
+    }
+
     @Autowired
     public void setTicketDao(TicketDao ticketDao) {
         this.ticketDao = ticketDao;
     }
 
-    @Override
     @Autowired
     public void setUserAccountDao(UserAccountDao userAccountDao) {
         this.userAccountDao = userAccountDao;
     }
 
-    @Override
     @Autowired
     public void setEventDao(EventDao eventDao) {
         this.eventDao = eventDao;
+    }
+
+    @Autowired
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 }

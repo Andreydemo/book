@@ -19,7 +19,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class UserServiceTest {
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Mock
     UserRepository userRepository;

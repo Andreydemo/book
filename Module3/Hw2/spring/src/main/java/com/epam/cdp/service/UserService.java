@@ -1,8 +1,6 @@
 package com.epam.cdp.service;
 
-import com.epam.cdp.dao.UserAccountDao;
 import com.epam.cdp.model.User;
-import com.epam.cdp.repository.UserRepository;
 
 import java.util.List;
 
@@ -18,8 +16,4 @@ public interface UserService {
     User updateUser(User user);
 
     boolean deleteUser(long userId);
-
-    void setUserAccountDao(UserAccountDao userAccountDao);
-
-    void setUserRepository(UserRepository userRepository);
 }

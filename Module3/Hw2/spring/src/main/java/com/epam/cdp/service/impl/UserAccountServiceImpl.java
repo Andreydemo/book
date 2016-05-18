@@ -71,7 +71,6 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Autowired
-    @Override
     public void setUserAccountDao(UserAccountDao userAccountDao) {
         this.userAccountDao = userAccountDao;
     }

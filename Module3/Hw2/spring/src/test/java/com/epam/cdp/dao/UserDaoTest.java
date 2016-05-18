@@ -24,20 +24,20 @@ public class UserDaoTest {
 
     @Test
     public void whenGetUserByIdThenUserIsReturned() {
-        User user = new UserImpl(1, "test", "test@test.com");
-        User result = userDao.getUserById(1);
+        User user = new UserImpl(3, "test", "test@test.com");
+        User result = userDao.getUserById(3);
         assertEquals(user, result);
     }
 
     @Test
     public void whenGetUserByEmailThenUserIsReturned() {
-        User user = new UserImpl(1, "test", "test@test.com");
+        User user = new UserImpl(3, "test", "test@test.com");
         assertEquals(user, userDao.getUserByEmail("test@test.com"));
     }
 
     @Test
     public void whenGetUsersByNameWithOnePageSizeThenListWithOneUserIsReturned() {
-        List<Object> users = Arrays.asList(new UserImpl(1, "test", "test@test.com"));
+        List<Object> users = Arrays.asList(new UserImpl(3, "test", "test@test.com"));
         assertEquals(users, userDao.getUsersByName("test", 1, 1));
     }
 

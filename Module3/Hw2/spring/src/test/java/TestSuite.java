@@ -1,3 +1,4 @@
+import com.epam.cdp.IntegrationTest;
 import com.epam.cdp.dao.EventDaoTest;
 import com.epam.cdp.dao.TicketDaoTest;
 import com.epam.cdp.dao.UserAccountDaoTest;

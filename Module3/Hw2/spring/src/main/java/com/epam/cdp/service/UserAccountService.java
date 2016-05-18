@@ -1,6 +1,5 @@
 package com.epam.cdp.service;
 
-import com.epam.cdp.dao.UserAccountDao;
 import com.epam.cdp.model.UserAccount;
 
 import java.math.BigDecimal;
@@ -17,6 +16,4 @@ public interface UserAccountService {
     UserAccount getUserAccountByUserId(long userId);
 
     boolean deleteUserAccountByUserId(long userId);
-
-    void setUserAccountDao(UserAccountDao userAccountDao);
 }

@@ -83,13 +83,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.findOne(userId) == null;
     }
 
-    @Override
     @Autowired
     public void setUserAccountDao(UserAccountDao userAccountDao) {
         this.userAccountDao = userAccountDao;
     }
 
-    @Override
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;

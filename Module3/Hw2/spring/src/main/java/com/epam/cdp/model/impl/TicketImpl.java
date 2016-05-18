@@ -3,10 +3,10 @@ package com.epam.cdp.model.impl;
 import com.epam.cdp.model.Ticket;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import java.io.Serializable;
 import java.util.Objects;
 
-//@XmlRootElement(name="ticket")
-public class TicketImpl implements Ticket {
+public class TicketImpl implements Ticket, Serializable {
     private long id;
     private long eventId;
     private long userId;
