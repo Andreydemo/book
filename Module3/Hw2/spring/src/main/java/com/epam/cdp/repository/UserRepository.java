@@ -12,5 +12,5 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<UserImpl, Long > {
     User findByEmail(String email);
 
-    List<User> findByName(String name, Pageable pageable);
+    List<User> findByNameLike(String name, Pageable pageable);
 }

@@ -54,7 +54,7 @@ public class UserServiceTest {
     @Test
     public void whenGetUsersByNameThenListOfUsersIsReturned() {
         List<User> users = Arrays.asList(new UserImpl(1, "user", "user@user.com"));
-        when(userRepository.findByName(anyString(), anyObject())).thenReturn(users);
+        when(userRepository.findByNameLike(anyString(), anyObject())).thenReturn(users);
         assertEquals(users, userService.getUsersByName("user", 1, 1));
     }
 

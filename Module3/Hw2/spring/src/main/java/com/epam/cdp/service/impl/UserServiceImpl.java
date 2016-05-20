@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUsersByName(String name, int pageSize, int pageNum) {
-        List<User> users = userRepository.findByName(name, new PageRequest(pageNum - 1, pageSize));
+        List<User> users = userRepository.findByNameLike(name, new PageRequest(pageNum - 1, pageSize));
         logger.debug("Returning users by name: " + name + " with pageSize: " + pageSize + " and pageNum: " + pageNum + " " + users);
         return users;
     }
