@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tickets</title>
+</head>
+<body>
+<h1>Tickets:</h1>
+<table>
+    <tr>
+        <th>id</th>
+        <th>user id</th>
+        <th>event id</th>
+        <th>category</th>
+        <th>place</th>
+    </tr>
+    <tr th:each="it,iterationStatus  : ${tickets}">
+        <td th:text="${it.id}">id</td>
+        <td th:text="${it.userId}">user id</td>
+        <td th:text="${it.eventId}">event id</td>
+        <td th:text="${it.category}">category</td>
+        <td th:text="${it.place}">place</td>
+    </tr>
+</table>
+</body>
+</html>
