@@ -2,11 +2,11 @@ package com.epam.cdp.dao.impl;
 
 import com.epam.cdp.dao.TicketDao;
 import com.epam.cdp.dao.mapper.TicketRowMapper;
+import com.epam.cdp.dao.parameterSource.DefaultEntitySqlParameterSource;
+import com.epam.cdp.entityHolder.EntityHolder;
 import com.epam.cdp.model.Event;
 import com.epam.cdp.model.Ticket;
 import com.epam.cdp.model.User;
-import com.epam.cdp.entityHolder.EntityHolder;
-import com.epam.cdp.dao.parameterSource.DefaultEntitySqlParameterSource;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -33,6 +34,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmail(String email) {
+        if (email == null) {
+            logger.debug("Email is null, returning null");
+            return null;
+        }
         User user = userRepository.findByEmail(email);
         logger.debug("Returning user by email: " + email + ", " + user);
         return user;
@@ -40,6 +45,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUsersByName(String name, int pageSize, int pageNum) {
+        if (name == null || pageSize < 1 || pageNum < 1) {
+            logger.debug("Not valid arguments, returning empty collection");
+            return Collections.emptyList();
+        }
         List<User> users = userRepository.findByNameLike(name, new PageRequest(pageNum - 1, pageSize));
         logger.debug("Returning users by name: " + name + " with pageSize: " + pageSize + " and pageNum: " + pageNum + " " + users);
         return users;
@@ -48,6 +57,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User createUser(User user) {
+        if (user == null) {
+            logger.debug("User is null, returning null");
+            return null;
+        }
         logger.debug("Creating user: " + user);
         try {
             User createdUser = userRepository.save((UserImpl) user);
@@ -62,6 +75,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User updateUser(User user) {
+        if (user == null) {
+            logger.debug("User is null, returning null");
+            return null;
+        }
         logger.debug("Updating user: " + user);
         try {
             UserImpl userToUpdate = userRepository.findOne(user.getId());

@@ -3,13 +3,14 @@ package com.epam.cdp.service.impl;
 import com.epam.cdp.dao.UserAccountDao;
 import com.epam.cdp.exception.ApplicationException;
 import com.epam.cdp.model.UserAccount;
+import com.epam.cdp.service.UserAccountService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import com.epam.cdp.service.UserAccountService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
@@ -18,6 +19,10 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public void refillAccount(long userId, BigDecimal amount) {
+        if (amount == null || amount.compareTo(new BigDecimal(BigInteger.ZERO)) < 0) {
+            logger.debug("amount is null or is less than zero, account cannot be refilled");
+            return;
+        }
         logger.debug("Refilling users account, userId = " + userId + ", amount = " + amount);
         try {
             userAccountDao.refillAccount(userId, amount);
@@ -29,6 +34,10 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public void withdraw(long userId, BigDecimal amount) {
+        if (amount == null || amount.compareTo(new BigDecimal(BigInteger.ZERO)) < 0) {
+            logger.debug("amount is null or is less than zero, account cannot be withdrawn");
+            return;
+        }
         logger.debug("Withdrawing from users account, userId = " + userId + ", amount = " + amount);
         try {
             userAccountDao.withdraw(userId, amount);

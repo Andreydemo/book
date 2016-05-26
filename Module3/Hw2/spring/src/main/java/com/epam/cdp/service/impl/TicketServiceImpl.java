@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -27,6 +28,10 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     @Override
     public Ticket bookTicket(long userId, long eventId, int place, Ticket.Category category) {
+        if (place < 1 || category == null) {
+            logger.debug("Not valid arguments, returning null");
+            return null;
+        }
         logger.debug("Booking ticket");
         if (isUserExists(userId) && isEventExists(eventId)) {
             if (isPlaceAlreadyBooked(eventId, place)) {
@@ -53,6 +58,10 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {
+        if (user == null || pageSize < 1 || pageNum < 1) {
+            logger.debug("Not valid arguments, returning empty collection");
+            return Collections.emptyList();
+        }
         List<Ticket> tickets = ticketDao.getBookedTickets(user, pageSize, pageNum);
         logger.debug("Returning booked tickets by user: " + user + " with pageSize: " + pageSize + " and pageNum: " + pageNum + " " + tickets);
         return tickets;
@@ -60,6 +69,10 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum) {
+        if (event == null || pageSize < 1 || pageNum < 1) {
+            logger.debug("Not valid arguments, returning empty collection");
+            return Collections.emptyList();
+        }
         List<Ticket> tickets = ticketDao.getBookedTickets(event, pageSize, pageNum);
         logger.debug("Returning booked tickets by event: " + event + " with pageSize: " + pageSize + " and pageNum: " + pageNum + " " + tickets);
         return tickets;

@@ -9,6 +9,7 @@ import org.springframework.dao.DataAccessException;
 import com.epam.cdp.service.EventService;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +27,10 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> getEventsByTitle(String title, int pageSize, int pageNum) {
+        if (title == null) {
+            logger.debug("Title is null, returning empty collection");
+            return Collections.emptyList();
+        }
         List<Event> events = eventDao.getEventsByTitle(title, pageSize, pageNum);
         logger.debug("Returning events by title: " + title + " with pageSize: " + pageSize + " and pageNum: " + pageNum + " " + events);
         return events;
@@ -33,6 +38,10 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> getEventsForDay(Date day, int pageSize, int pageNum) {
+        if (day == null) {
+            logger.debug("Day is null, returning empty collection");
+            return Collections.emptyList();
+        }
         List<Event> events = eventDao.getEventsForDay(day, pageSize, pageNum);
         logger.debug("Returning events for day: " + day + " with pageSize: " + pageSize + " and pageNum: " + pageNum + " " + events);
         return events;
@@ -40,6 +49,10 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event createEvent(Event event) {
+        if (event == null) {
+            logger.debug("Event is null, returning null");
+            return null;
+        }
         logger.debug("Creating event: " + event);
         try {
             return eventDao.createEvent(event);
@@ -51,6 +64,10 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event updateEvent(Event event) {
+        if (event == null) {
+            logger.debug("Event is null, returning null");
+            return null;
+        }
         logger.debug("Updating event: " + event);
         try {
             return eventDao.updateEvent(event);
