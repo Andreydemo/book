@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -39,6 +40,7 @@ public class JsonFileEntitySaverService implements com.epam.cdp.service.FileEnti
         this.gson = gson;
     }
 
+    @Transactional
     @Override
     public void save(String filePath) {
         Map<String, JsonElement> elementMap = getStringJsonElementMap(filePath, gson);
@@ -58,16 +60,18 @@ public class JsonFileEntitySaverService implements com.epam.cdp.service.FileEnti
     private void saveEntry(Map.Entry<String, JsonElement> entry) {
         if (entry.getKey().equals("events")) {
             List<EventImpl> list = getEntityList(entry.getValue(), new TypeToken<List<EventImpl>>() {});
-            list.forEach(eventDao::createEvent);
+            logger.debug("inserting list of events " + list);
+            eventDao.insertBatch(list);
         }
         if (entry.getKey().equals("users")) {
             List<UserImpl> list = getEntityList(entry.getValue(), new TypeToken<List<UserImpl>>() {});
-            list.forEach(userDao::createUser);
+            logger.debug("inserting list of users " + list);
+            userDao.insertBatch(list);
         }
         if (entry.getKey().equals("tickets")) {
             List<TicketImpl> list = getEntityList(entry.getValue(), new TypeToken<List<TicketImpl>>() {});
-            for (TicketImpl ticket : list)
-                ticketDao.bookTicket(ticket.getUserId(), ticket.getEventId(), ticket.getPlace(), ticket.getCategory());
+            logger.debug("inserting list of tickets " + list);
+            ticketDao.insertBatch(list);
         }
     }
 

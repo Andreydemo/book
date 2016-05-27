@@ -3,13 +3,17 @@ package com.epam.cdp.dao.impl;
 import com.epam.cdp.dao.EventDao;
 import com.epam.cdp.dao.mapper.EventRowMapper;
 import com.epam.cdp.model.Event;
+import com.epam.cdp.model.impl.EventImpl;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
@@ -69,6 +73,26 @@ public class EventDaoImpl implements EventDao {
         String sql = "Delete from event where id = ?";
         logger.debug("Deleting event with id: " + eventId);
         return jdbcTemplate.update(sql, eventId) != 0;
+    }
+
+    @Override
+    public void insertBatch(List<EventImpl> events) {
+        String sql = "Insert into event(title, date, ticketPrice) VALUES (?, ?, ?)";
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                EventImpl event = events.get(i);
+                ps.setString(1, event.getTitle());
+                ps.setDate(2, new java.sql.Date(event.getDate().getTime()));
+                ps.setBigDecimal(3, event.getTicketPrice());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return events.size();
+            }
+        });
     }
 
     @Autowired

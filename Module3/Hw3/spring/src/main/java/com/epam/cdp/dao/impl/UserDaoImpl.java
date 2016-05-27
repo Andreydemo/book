@@ -3,13 +3,17 @@ package com.epam.cdp.dao.impl;
 import com.epam.cdp.dao.UserDao;
 import com.epam.cdp.dao.mapper.UserRowMapper;
 import com.epam.cdp.model.User;
+import com.epam.cdp.model.impl.UserImpl;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +72,25 @@ public class UserDaoImpl implements UserDao {
         logger.debug("Deleting user by id " + userId);
         String sql = "Delete from user where id = ?";
         return jdbcTemplate.update(sql, userId) != 0;
+    }
+
+    @Override
+    public void insertBatch(List<UserImpl> users) {
+        String sql = "Insert into user(name, email) VALUES (?, ?)";
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                UserImpl event = users.get(i);
+                ps.setString(1, event.getName());
+                ps.setString(2, event.getEmail());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return users.size();
+            }
+        });
     }
 
     @Autowired

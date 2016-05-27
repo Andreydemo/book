@@ -1,6 +1,7 @@
 package com.epam.cdp.dao;
 
 import com.epam.cdp.model.Event;
+import com.epam.cdp.model.impl.EventImpl;
 
 import java.util.Date;
 import java.util.List;
@@ -17,4 +18,6 @@ public interface EventDao {
     Event updateEvent(Event event);
 
     boolean deleteEvent(long eventId);
+
+    void insertBatch(List<EventImpl> events);
 }

@@ -1,4 +1,21 @@
 {
+  "users": [
+    {
+      "id": 133,
+      "name": "user",
+      "email": "user@test.com"
+    },
+    {
+      "id": 1,
+      "name": "anotherUser",
+      "email": "xx@xxx.com"
+    },
+    {
+      "id": 122,
+      "name": "user user",
+      "email": "user@user.uk"
+    }
+  ],
   "events": [
     {
       "id": 22,
@@ -17,23 +34,6 @@
       "title": "event",
       "date": 22000,
       "ticketPrice": 2.33
-    }
-  ],
-  "users": [
-    {
-      "id": 133,
-      "name": "user",
-      "email": "user@test.com"
-    },
-    {
-      "id": 1,
-      "name": "anotherUser",
-      "email": "xx@xxx.com"
-    },
-    {
-      "id": 1,
-      "name": "user user",
-      "email": "user@user.uk"
     }
   ],
   "tickets": [
