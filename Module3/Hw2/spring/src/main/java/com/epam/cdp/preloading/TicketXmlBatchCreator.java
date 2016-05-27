@@ -1,7 +1,6 @@
 package com.epam.cdp.preloading;
 
 import com.epam.cdp.dao.TicketDao;
-import com.epam.cdp.model.Ticket;
 import com.epam.cdp.model.impl.TicketImpl;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,8 +60,6 @@ public class TicketXmlBatchCreator implements TicketBatchCreator {
 
     private void writeToDatabase(TicketsWrapper ticketsWrapper) {
         List<TicketImpl> tickets = ticketsWrapper.getTickets();
-        for (Ticket ticket : tickets) {
-            ticketDao.bookTicket(ticket.getUserId(), ticket.getEventId(), ticket.getPlace(), ticket.getCategory());
-        }
+        ticketDao.insertBatch(tickets);
     }
 }

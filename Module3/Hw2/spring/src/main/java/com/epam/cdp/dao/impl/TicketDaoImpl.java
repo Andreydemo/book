@@ -7,14 +7,18 @@ import com.epam.cdp.entityHolder.EntityHolder;
 import com.epam.cdp.model.Event;
 import com.epam.cdp.model.Ticket;
 import com.epam.cdp.model.User;
+import com.epam.cdp.model.impl.TicketImpl;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,11 +81,33 @@ public class TicketDaoImpl implements TicketDao {
         return jdbcTemplate.update(sql, ticketId) != 0;
     }
 
+    @Override
     public Ticket getTicketById(long id) {
         String sql = "Select id, eventId, userId, category, place from ticket where id = ?";
         List<Ticket> tickets = jdbcTemplate.query(sql, new Object[]{id}, new TicketRowMapper());
         logger.debug("Returning ticket by id: " + id + ", = " + tickets);
         return tickets.isEmpty() ? null : tickets.get(0);
+    }
+
+    @Override
+    public void insertBatch(List<TicketImpl> tickets) {
+        String sql = "Insert into ticket(eventId, userId, category, place) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                Ticket ticket = tickets.get(i);
+                ps.setLong(1, ticket.getEventId());
+                ps.setLong(2, ticket.getUserId());
+                ps.setString(3, ticket.getCategory().toString());
+                ps.setInt(4, ticket.getPlace());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return tickets.size();
+            }
+        });
     }
 
     @Autowired

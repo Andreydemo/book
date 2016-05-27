@@ -3,6 +3,7 @@ package com.epam.cdp.dao;
 import com.epam.cdp.model.Event;
 import com.epam.cdp.model.Ticket;
 import com.epam.cdp.model.User;
+import com.epam.cdp.model.impl.TicketImpl;
 
 import java.util.List;
 
@@ -14,4 +15,8 @@ public interface TicketDao {
     List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum);
 
     boolean cancelTicket(long ticketId);
+
+    Ticket getTicketById(long id);
+
+    void insertBatch(List<TicketImpl> tickets);
 }
