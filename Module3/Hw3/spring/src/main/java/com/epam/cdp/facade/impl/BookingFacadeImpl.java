@@ -153,8 +153,7 @@ public class BookingFacadeImpl implements BookingFacade {
 
     @Override
     public UserAccount refillAccount(long userId, BigDecimal amount) {
-        userAccountService.refillAccount(userId, amount);
-        return null;
+        return userAccountService.refillAccount(userId, amount);
     }
 
     @Override
