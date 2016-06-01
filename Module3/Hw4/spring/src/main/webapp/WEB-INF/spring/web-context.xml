@@ -1,0 +1,52 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+    <context:property-placeholder location="classpath:properties.properties"/>
+
+    <context:component-scan base-package="com.epam.cdp.web"/>
+
+    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">
+        <mvc:message-converters register-defaults="false">
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+            <bean class="com.epam.cdp.web.converter.PdfHttpMessageConverter"/>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <bean id="contentNegotiationManager"
+          class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="defaultContentType" value="application/json"/>
+        <property name="ignoreAcceptHeader" value="true"/>
+        <property name="mediaTypes">
+            <map>
+                <entry key="json" value="application/json"/>
+                <entry key="pdf" value="application/pdf"/>
+            </map>
+        </property>
+        <property name="useJaf" value="false"/>
+    </bean>
+
+    <bean id="viewResolver"
+          class="org.thymeleaf.spring4.view.ThymeleafViewResolver"
+          p:templateEngine-ref="templateEngine"/>
+
+    <bean id="templateEngine"
+          class="org.thymeleaf.spring4.SpringTemplateEngine"
+          p:templateResolver-ref="templateResolver"/>
+
+    <bean id="templateResolver" class=
+            "org.thymeleaf.templateresolver.ServletContextTemplateResolver"
+          p:prefix="/WEB-INF/templates/"
+          p:suffix=".html"
+          p:templateMode="HTML5"/>
+
+</beans>

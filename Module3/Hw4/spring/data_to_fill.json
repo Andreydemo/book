@@ -1,0 +1,62 @@
+{
+  "events": [
+    {
+      "id": 22,
+      "title": "event",
+      "date": 2211,
+      "ticketPrice": 3.33
+    },
+    {
+      "id": 12,
+      "title": "testEvent",
+      "date": 9466,
+      "ticketPrice": 1.33
+    },
+    {
+      "id": 18,
+      "title": "event",
+      "date": 22000,
+      "ticketPrice": 2.33
+    }
+  ],
+  "users": [
+    {
+      "id": 133,
+      "name": "user",
+      "email": "user@test.com"
+    },
+    {
+      "id": 1,
+      "name": "anotherUser",
+      "email": "xx@xxx.com"
+    },
+    {
+      "id": 1,
+      "name": "user user",
+      "email": "user@user.uk"
+    }
+  ],
+  "tickets": [
+    {
+      "id": 72,
+      "eventId": 2,
+      "userId": 1,
+      "category": "STANDART",
+      "place": 122
+    },
+    {
+      "id": 71,
+      "eventId": 1,
+      "userId": 1,
+      "category": "BAR",
+      "place": 9
+    },
+    {
+      "id": 11,
+      "eventId": 1,
+      "userId": 1,
+      "category": "PREMIUM",
+      "place": 99
+    }
+  ]
+}
