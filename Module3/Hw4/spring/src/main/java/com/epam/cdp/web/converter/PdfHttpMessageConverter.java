@@ -12,6 +12,7 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.List;
 
 public class PdfHttpMessageConverter extends AbstractGenericHttpMessageConverter<Object> {
@@ -27,12 +28,15 @@ public class PdfHttpMessageConverter extends AbstractGenericHttpMessageConverter
 
     @Override
     public boolean canWrite(Type type, Class<?> contextClass, MediaType mediaType) {
+        System.out.println(type);
+        type.equals(List.class);
         if (super.canWrite(mediaType)) {
-            if (type.equals(List.class)) {
-                Type actualTypeArgument = ((ParameterizedType) type).getActualTypeArguments()[0];
-                return actualTypeArgument.equals(Ticket.class);
-            } else {
-                return type.equals(Ticket.class);
+            Type[] typeArguments = ((ParameterizedType) type).getActualTypeArguments();
+            System.out.println(Arrays.toString(typeArguments));
+            if (typeArguments.length == 1) {
+                Type elementType = typeArguments[0];
+                System.out.println(elementType.equals(Ticket.class));
+                return elementType.equals(Ticket.class);
             }
         }
         return false;

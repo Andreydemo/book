@@ -66,7 +66,7 @@ public class TicketController {
      * @throws com.epam.cdp.exception.EntityNotFoundException if there is no such user or any matching tickets.
      */
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
-    public List<Resource<Ticket>> getTicketsByUser(@PathVariable long userId,
+    public List<Ticket> getTicketsByUser(@PathVariable long userId,
                                                    @RequestParam(defaultValue = MAX_INT_AS_STRING) int pageSize,
                                                    @RequestParam(defaultValue = "1") int pageNum) {
         User user = bookingFacade.getUserById(userId);
@@ -76,7 +76,8 @@ public class TicketController {
         throwExceptionIfTicketListIsEmpty(tickets);
         logger.debug("Returning booked tickets by user: " + user + " with pageSize: " + pageSize + " and pageNum: " + pageNum + " " + tickets);
 
-        return tickets.stream().map(this::getResourceWithEventAndUserLinks).collect(Collectors.toList());
+
+        return tickets;
     }
 
     /**

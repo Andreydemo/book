@@ -34,19 +34,4 @@
         </property>
         <property name="useJaf" value="false"/>
     </bean>
-
-    <bean id="viewResolver"
-          class="org.thymeleaf.spring4.view.ThymeleafViewResolver"
-          p:templateEngine-ref="templateEngine"/>
-
-    <bean id="templateEngine"
-          class="org.thymeleaf.spring4.SpringTemplateEngine"
-          p:templateResolver-ref="templateResolver"/>
-
-    <bean id="templateResolver" class=
-            "org.thymeleaf.templateresolver.ServletContextTemplateResolver"
-          p:prefix="/WEB-INF/templates/"
-          p:suffix=".html"
-          p:templateMode="HTML5"/>
-
 </beans>
