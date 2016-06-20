@@ -1,2 +1,2 @@
-public class Bread {
+public class Bread implements Dough {
 }
