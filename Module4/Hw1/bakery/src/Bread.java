@@ -1,4 +1,4 @@
-public class Bread implements Dough {
+public class Bread implements BakeableItem {
     private Recipe recipe;
 
     @Override

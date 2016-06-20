@@ -1,3 +1,3 @@
 public interface Bakeable {
-    Dough bake(Type type);
+    BakeableItem bake(Type type);
 }

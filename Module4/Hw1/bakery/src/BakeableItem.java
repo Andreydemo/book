@@ -1,3 +1,3 @@
-public interface Dough {
+public interface BakeableItem {
     void setRecipe(Recipe recipe);
 }

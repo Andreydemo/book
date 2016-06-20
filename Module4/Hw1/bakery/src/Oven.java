@@ -11,7 +11,7 @@ public class Oven implements Gas, Bakeable {
     }
 
     @Override
-    public Dough bake(Type type) {
+    public BakeableItem bake(Type type) {
         levelOfGas -= 10;
         return type.bake();
     }

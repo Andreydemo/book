@@ -1,4 +1,4 @@
-public class Cake implements Dough {
+public class Cake implements BakeableItem {
     private Recipe recipe;
 
     public Recipe getRecipe() {
