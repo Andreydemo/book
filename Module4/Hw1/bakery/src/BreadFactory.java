@@ -1,5 +1,3 @@
-public class BreadFactory {
-    Bread makeBread() {
-        return new Bread();
-    }
+public abstract class BreadFactory {
+    abstract Bread makeBread();
 }
