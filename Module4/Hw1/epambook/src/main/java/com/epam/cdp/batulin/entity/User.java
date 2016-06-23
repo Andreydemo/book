@@ -1,5 +1,7 @@
 package com.epam.cdp.batulin.entity;
 
+import com.epam.cdp.batulin.entity.validator.CreateUser;
+import com.epam.cdp.batulin.entity.validator.UpdateUser;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,15 +21,15 @@ public class User {
     @Column(name = "user_id")
     private long id;
 
-    @Size(min = 3, max = 128, message = "{Size.user.name}")
-    @NotNull(message = "{NotNull.user.name}")
+    @Size(groups = {CreateUser.class, UpdateUser.class}, min = 3, max = 128, message = "{Size.user.name}")
+    @NotNull(groups = {CreateUser.class}, message = "{NotNull.user.name}")
     private String name;
 
-    @Size(min = 3, max = 128, message = "{Size.user.username}")
-    @NotNull(message = "{NotNull.user.username}")
+    @Size(groups = {CreateUser.class}, min = 3, max = 128, message = "{Size.user.username}")
+    @NotNull(groups = {CreateUser.class}, message = "{NotNull.user.username}")
     private String username;
 
-    @NotNull(message = "{NotNull.user.dateOfBirth}")
+    @NotNull(groups = {CreateUser.class}, message = "{NotNull.user.dateOfBirth}")
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
 

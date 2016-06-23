@@ -14,9 +14,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.sql.Date;
 
-import static com.epam.cdp.batulin.controller.ControllerTestUtils.APPLICATION_JSON_UTF8;
-import static com.epam.cdp.batulin.controller.ControllerTestUtils.convertObjectToJsonBytes;
-import static com.epam.cdp.batulin.controller.ControllerTestUtils.createExceptionResolver;
+import static com.epam.cdp.batulin.controller.ControllerTestUtils.*;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.anyObject;
@@ -227,4 +225,91 @@ public class UserControllerTest {
         verifyNoMoreInteractions(userService);
     }
 
+    @Test
+    public void whenUpdateUserThenUserIsUpdated() throws Exception {
+        String username = "max";
+        String name = "name";
+        Date date = new Date(1);
+        User user = new User(null, name, date);
+        when(userService.updateUser(anyObject())).thenReturn(new User(username, name, date));
+
+        mvc.perform(MockMvcRequestBuilders.put("/user/{username}", username).
+                content(convertObjectToJsonBytes(user)).
+                contentType(APPLICATION_JSON_UTF8).
+                accept(MediaType.APPLICATION_JSON)).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_UTF8)).
+                andExpect(jsonPath("$.username", is(username))).
+                andExpect(jsonPath("$.name", is(name))).
+                andExpect(jsonPath("$.dateOfBirth", is(date.toString())));
+
+        verify(userService, times(1)).updateUser(anyObject());
+        verifyNoMoreInteractions(userService);
+    }
+
+    @Test
+    public void whenUpdateUserWithNotValidNameThenErrorWithMessageAndBadRequestStatusCodeWouldBeSent() throws Exception {
+        String username = "max";
+        String name = "1";
+        Date date = new Date(1);
+        User user = new User(null, name, date);
+
+        mvc.perform(MockMvcRequestBuilders.put("/user/{username}", username).
+                content(convertObjectToJsonBytes(user)).
+                contentType(APPLICATION_JSON_UTF8).
+                accept(MediaType.APPLICATION_JSON)).
+                andExpect(status().isBadRequest()).
+                andExpect(content().contentType(APPLICATION_JSON_UTF8)).
+                andExpect(jsonPath("$.code", is(HttpStatus.BAD_REQUEST.value()))).
+                andExpect(jsonPath("$.message", is("User cannot be updated: name must be from 3 to 128 symbols")));
+
+        verify(userService, times(0)).updateUser(anyObject());
+        verifyNoMoreInteractions(userService);
+    }
+
+    @Test
+    public void whenUpdateUserWithNullNameAndNewDateOfBirthThenUserIsUpdated() throws Exception {
+        String username = "max";
+        Date date = new Date(1);
+        String validName = "validName";
+
+        User user = new User(null, null, date);
+        when(userService.updateUser(anyObject())).thenReturn(new User(username, validName, date));
+
+        mvc.perform(MockMvcRequestBuilders.put("/user/{username}", username).
+                content(convertObjectToJsonBytes(user)).
+                contentType(APPLICATION_JSON_UTF8).
+                accept(MediaType.APPLICATION_JSON)).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_UTF8)).
+                andExpect(jsonPath("$.username", is(username))).
+                andExpect(jsonPath("$.name", is(validName))).
+                andExpect(jsonPath("$.dateOfBirth", is(date.toString())));
+
+        verify(userService, times(1)).updateUser(anyObject());
+        verifyNoMoreInteractions(userService);
+    }
+
+    @Test
+    public void whenUpdateUserWithNullDateOfBirthAndNewNameThenUserIsUpdated() throws Exception {
+        String username = "max";
+        String name = "name";
+        Date date = new Date(1);
+
+        User user = new User(null, name, null);
+        when(userService.updateUser(anyObject())).thenReturn(new User(username, name, date));
+
+        mvc.perform(MockMvcRequestBuilders.put("/user/{username}", username).
+                content(convertObjectToJsonBytes(user)).
+                contentType(APPLICATION_JSON_UTF8).
+                accept(MediaType.APPLICATION_JSON)).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_UTF8)).
+                andExpect(jsonPath("$.username", is(username))).
+                andExpect(jsonPath("$.name", is(name))).
+                andExpect(jsonPath("$.dateOfBirth", is(date.toString())));
+
+        verify(userService, times(1)).updateUser(anyObject());
+        verifyNoMoreInteractions(userService);
+    }
 }

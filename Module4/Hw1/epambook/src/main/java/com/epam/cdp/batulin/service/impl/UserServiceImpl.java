@@ -1,17 +1,20 @@
 package com.epam.cdp.batulin.service.impl;
 
-        import com.epam.cdp.batulin.entity.Note;
-        import com.epam.cdp.batulin.entity.User;
-        import com.epam.cdp.batulin.exception.UserNotCreatedException;
-        import com.epam.cdp.batulin.exception.UserNotFoundException;
-        import com.epam.cdp.batulin.exception.UsersAreNotFriendsException;
-        import com.epam.cdp.batulin.repository.UserRepository;
-        import com.epam.cdp.batulin.service.UserService;
-        import org.slf4j.Logger;
-        import org.slf4j.LoggerFactory;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.stereotype.Service;
-        import org.springframework.transaction.annotation.Transactional;
+import com.epam.cdp.batulin.entity.Note;
+import com.epam.cdp.batulin.entity.User;
+import com.epam.cdp.batulin.exception.UserNotCreatedException;
+import com.epam.cdp.batulin.exception.UserNotFoundException;
+import com.epam.cdp.batulin.exception.UserNotUpdatedException;
+import com.epam.cdp.batulin.exception.UsersAreNotFriendsException;
+import com.epam.cdp.batulin.repository.UserRepository;
+import com.epam.cdp.batulin.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -31,6 +34,25 @@ public class UserServiceImpl implements UserService {
         User createdUser = userRepository.save(user);
         logger.debug("Created user = " + createdUser);
         return createdUser;
+    }
+
+    @Override
+    public User updateUser(User user) {
+        User userFromRepository = userRepository.findByUsername(user.getUsername());
+        if (userFromRepository == null) {
+            logger.warn("Cannot update user, user with such username was not found");
+            throw new UserNotUpdatedException("User with such username does not exist");
+        }
+
+        Date dateOfBirth = user.getDateOfBirth();
+        if (dateOfBirth != null)
+            userFromRepository.setDateOfBirth(dateOfBirth);
+
+        String name = user.getName();
+        if (name != null)
+            userFromRepository.setName(name);
+
+        return userRepository.save(userFromRepository);
     }
 
     @Override

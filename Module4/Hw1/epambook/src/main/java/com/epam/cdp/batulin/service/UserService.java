@@ -15,4 +15,6 @@ public interface UserService {
 
     @Transactional
     void checkIfUsersAreFriends(User user, User friend);
+
+    User updateUser(User user);
 }

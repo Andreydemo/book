@@ -1,9 +1,6 @@
 package com.epam.cdp.batulin.controller;
 
-import com.epam.cdp.batulin.exception.NoteNotAddedException;
-import com.epam.cdp.batulin.exception.UserNotCreatedException;
-import com.epam.cdp.batulin.exception.UserNotFoundException;
-import com.epam.cdp.batulin.exception.UsersAreNotFriendsException;
+import com.epam.cdp.batulin.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -29,6 +26,13 @@ public class GlobalControllerExceptionHandler {
     public Error handleUserNotCreatedException(UserNotCreatedException e) {
         logger.warn("User cannot be created, sending error with status bad request");
         return new Error(HttpStatus.BAD_REQUEST.value(), "User cannot be created: " + e.getMessage());
+    }
+
+    @ExceptionHandler(UserNotUpdatedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Error handleUserNotUpdatedException(UserNotUpdatedException e) {
+        logger.warn("User cannot be updated, sending error with status bad request");
+        return new Error(HttpStatus.BAD_REQUEST.value(), "User cannot be updated: " + e.getMessage());
     }
 
     @ExceptionHandler(UserNotFoundException.class)
