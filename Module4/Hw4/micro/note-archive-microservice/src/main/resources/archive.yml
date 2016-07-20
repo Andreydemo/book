@@ -1,0 +1,9 @@
+spring:
+  application:
+     name: archive-service
+  hornetq:
+     mode: native
+     host: localhost
+     port: 5455
+  main:
+     web-environment: false

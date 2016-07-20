@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: gateway-service
+
+eureka:
+  instance:
+     leaseRenewalIntervalInSeconds: 5
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1111/eureka/
+
+server:
+  port: 7861
+
+  zuul:
+    host:
+        socket-timeout-millis: 30000
+    routes:
+      users:
+          path: /users/**
+          serviceId: users-service
+          stripPrefix: false
+      timeline:
+          path: /timeline/**
+          serviceId: timeline-service
+          stripPrefix: false
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false

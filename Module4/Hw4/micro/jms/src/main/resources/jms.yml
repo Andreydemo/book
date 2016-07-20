@@ -1,0 +1,14 @@
+spring:
+    hornetq:
+        mode: embedded
+        embedded:
+            enabled: true
+            queues: noteQueue
+    application:
+        name: jms-service  # Service registers under this name
+    main:
+        web-environment: false
+
+queue:
+    port: 5455
+    host: localhost
