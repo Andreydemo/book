@@ -195,14 +195,14 @@ a {
 	font-weight: 700;
 }
 
-.contacts-info {
-	margin-left: 10px;
-	display: inline-block;
+.contacts-info h3 {
 	font: 14px/1.3em 'open_sansbold', 'Arial', 'Tahoma', sans-serif;
+	font-weight: 600;
 }
 
-.contacts-item {
+.contacts-item div {
 	padding: 10px;
+	display: inline-block;
 }
 
 .contacts-item .fa {
@@ -342,4 +342,8 @@ a {
 
 li.portfolio-item:last-of-type a:after {
 	content: ""; 
+}
+
+.education-list {
+	
 }
