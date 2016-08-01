@@ -147,7 +147,7 @@ a {
 #aside:target {
   left: -250px;
 }
-#aside:target .container {
+#aside:target + .container {
   transition: width 0.3s ease;
   width: 100%;
   height: 100%;
@@ -341,16 +341,33 @@ li.skill:last-child {
 }
 
 .add-skill-form {
-  border: 1px solid #26C17E;
+  border: 1px solid #26c17e;
   display: inline-block;
   margin-bottom: 10px;
 }
 .add-skill-form input[type="submit"] {
   margin: 0 0 10px 10px;
+  border-radius: 5px;
+  background: black;
+  color: #fff;
+  padding: 9px 13px;
+  border: 0px;
+}
+.add-skill-form input[type="submit"]:hover {
+  background: #26C17E;
 }
 
 .input-skill {
   margin: 20px;
+}
+.input-skill input[type="number"] {
+  width: 64%;
+}
+.input-skill input {
+  border-radius: 5px;
+  padding-left: 7px;
+  border: 1px solid #EEE;
+  height: 40px;
 }
 
 .width-70 {
@@ -506,8 +523,53 @@ li.portfolio-item:last-of-type a:after {
 }
 
 @media (max-width: 400px) {
+  .content {
+    margin: 80px auto;
+    width: initial;
+  }
+
+  .container {
+    font-size: 98%;
+  }
+
+  .experience-info {
+    width: 35%;
+  }
+
+  .experience-details {
+    width: 65%;
+  }
+
+  .text-item {
+    font-size: 10px;
+  }
+
+  .section {
+    margin: 35px;
+  }
+
   .aside {
-    width: 100px;
+    width: 50px;
+  }
+
+  .comment-author p, .comment-author a {
+    font-size: 11px;
+  }
+  .comment-author img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .item-expert {
+    width: 32%;
+  }
+
+  .item-proficient {
+    width: 16%;
+  }
+
+  .education-info {
+    width: 70%;
   }
 
   .aside-text span, .aside-header-name {
@@ -515,17 +577,29 @@ li.portfolio-item:last-of-type a:after {
   }
 
   .aside-header-photo {
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
   }
 
   .aside-text i {
-    font-size: 30px;
-    margin-left: 12px;
+    font-size: 20px;
+    margin-left: -5px;
+  }
+
+  .aside-back-button span {
+    display: none;
+  }
+
+  .aside-back {
+    margin: 19px 4%;
   }
 
   .container {
-    margin-left: 100px;
+    margin-left: 50px;
+  }
+
+  #aside:target {
+    left: -50px;
   }
 }
 @keyframes spinner {
