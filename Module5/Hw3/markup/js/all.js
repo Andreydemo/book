@@ -1,7 +1,7 @@
 $(document).ready(function(){	
 	$('.spinner-mask').css({"opacity": "1", "animation-iteration-count": "1"});
 	$('.education-list').css({"opacity": "0"});
-	var myFirebaseRef = new Firebase("https://cdp-db.firebaseio.com/");
+	var myFirebaseRef = new Firebase("https://cdp-db.firebaseio.com/education");
 		
 	function createEducationItem(element) {
 		var li = document.createElement("li");
@@ -28,35 +28,31 @@ $(document).ready(function(){
 		$(".education-list").append(li);
 	}	
 	
-	function renderList(element, from, to) {
-		for (i = from; i < to; i++) {
-			createEducationItem(element[i]);
-		}
-	}
+	function uploadEducation() {
+            var nextKey = $('.education-list').children().length;
+            myFirebaseRef.
+				orderByKey().
+				startAt(nextKey.toString()).
+				limitToFirst(5).
+				once("value", function(snapshot) {
+					snapshot.forEach(function(childSnapshot){
+						createEducationItem(childSnapshot.val());
+					});
+					},  function (errorObject) {
+						console.log("The read failed: " + errorObject.code);
+					});
+    };
 		
 	function initialUpload(){
-	  $('.spinner-mask').css({"opacity": "0"});
-	  $('.education-list').css({"opacity": "1"});
-				 
-	  myFirebaseRef.on("child_added", function(snapshot) {
-			renderList(snapshot.val(), 0, 5);
-		}, 
-		function (errorObject) {
-			console.log("The read failed: " + errorObject.code);
-        });
+		$('.spinner-mask').css({"opacity": "0"});
+		$('.education-list').css({"opacity": "1"});
+		uploadEducation();
 	};
 	setTimeout(initialUpload, 2000);
 	
 	$(".education-list").scroll(function() {
 	   if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
-			myFirebaseRef.on("child_added", function(snapshot) {
-			var elements = snapshot.val();
-			var numItems = $('.education-item').length;
-			renderList(elements, numItems, elements.length);
-		}, 
-		function (errorObject) {
-			console.log("The read failed: " + errorObject.code);
-        });
+			uploadEducation();
 	   }
 	});
 
