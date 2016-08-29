@@ -1,0 +1,25 @@
+<div ng-mouseenter="options=true" ng-mouseleave="options=false">
+    <div class="clearfix">
+        <a href="" class="button open-edit" ng-click="skillsCtrl.show = !skillsCtrl.show" ng-show="options">
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+            <span>Open edit</span>
+        </a>
+    </div>
+    <h2 class="section-title">Skills</h2>
+    <form class="add-skill-form" name="skillForm" ng-submit="skillForm.$valid && skillsCtrl.addSkill()" ng-class="skillsCtrl.show ? '' : 'hide'">
+        <div class="input-skill">
+            <label>Skill name:</label>
+            <input ng-model="skillsCtrl.skill.name" type="text" placeholder="Enter skill name" maxlength="100"
+                   required="required"/>
+        </div>
+        <div class="input-skill">
+            <label>Skill range:</label>
+            <input ng-model="skillsCtrl.skill.width" type="number" min="10" max="100" placeholder="Enter skill range"
+                   required="required"/>
+        </div>
+        <input type="submit" value="Add skill" class="submit"/>
+    </form>
+    <article>
+        <skills-list skills='skillsCtrl.skills'></skills-list>
+    </article>
+</div>
